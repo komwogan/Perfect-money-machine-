@@ -4,9 +4,15 @@ let aiInstance: any = null;
 
 function getAI() {
   if (!aiInstance) {
-    const apiKey = process.env.GEMINI_API_KEY;
+    let apiKey = '';
+    try {
+      apiKey = (typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY) || '';
+    } catch (e) {
+      console.warn("Could not access process.env.GEMINI_API_KEY safely", e);
+    }
+    
     if (!apiKey) {
-      console.warn("GEMINI_API_KEY is not set.");
+      console.warn("GEMINI_API_KEY is not set or accessible.");
     }
     aiInstance = new GoogleGenAI({ apiKey: apiKey || 'dummy-key' });
   }

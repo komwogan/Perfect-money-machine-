@@ -10,7 +10,6 @@ import {
   Star, 
   Mail, 
   Clock, 
-  ShieldCheck, 
   ArrowRight,
   TrendingUp,
   MessageSquare,
@@ -43,28 +42,33 @@ export default function App() {
   // --- Daily Refresh Logic ---
   useEffect(() => {
     async function loadData() {
-      const today = new Date().toDateString();
-      const cached = localStorage.getItem('daily_predictions');
-      const cachedDate = localStorage.getItem('prediction_date');
+      try {
+        const today = new Date().toDateString();
+        const cached = localStorage.getItem('daily_predictions');
+        const cachedDate = localStorage.getItem('prediction_date');
 
-      if (cached && cachedDate === today) {
-        try {
-          setPredictions(JSON.parse(cached));
-          setIsLoading(false);
-          return;
-        } catch (e) {
-          console.error("Failed to parse cached predictions", e);
-          localStorage.removeItem('daily_predictions');
+        if (cached && cachedDate === today) {
+          try {
+            setPredictions(JSON.parse(cached));
+            setIsLoading(false);
+            return;
+          } catch (e) {
+            console.error("Failed to parse cached predictions", e);
+            localStorage.removeItem('daily_predictions');
+          }
+        } 
+        
+        const data = await getDailyPredictions();
+        if (data && data.length > 0) {
+          setPredictions(data);
+          localStorage.setItem('daily_predictions', JSON.stringify(data));
+          localStorage.setItem('prediction_date', today);
         }
-      } 
-      
-      const data = await getDailyPredictions();
-      if (data && data.length > 0) {
-        setPredictions(data);
-        localStorage.setItem('daily_predictions', JSON.stringify(data));
-        localStorage.setItem('prediction_date', today);
+      } catch (err) {
+        console.error("Critical error loading data:", err);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     }
     loadData();
   }, []);
@@ -114,7 +118,19 @@ export default function App() {
 
   return (
     <div className="bg-[#0A0E1A] text-white font-['Inter'] selection:bg-[#00FF87] selection:text-black min-h-screen">
-      {/* 1. NAVIGATION BAR */}
+      {isLoading ? (
+        <div className="fixed inset-0 bg-[#0A0E1A] flex flex-col items-center justify-center z-[100]">
+          <Trophy className="text-[#00FF87] w-16 h-16 mb-4 animate-pulse" />
+          <div className="text-xl font-display tracking-widest animate-pulse">WOGAN PREDICTS</div>
+          <div className="mt-8 flex gap-2">
+            <div className="w-2 h-2 bg-[#00FF87] rounded-full animate-bounce" />
+            <div className="w-2 h-2 bg-[#00FF87] rounded-full animate-bounce [animation-delay:0.2s]" />
+            <div className="w-2 h-2 bg-[#00FF87] rounded-full animate-bounce [animation-delay:0.4s]" />
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* 1. NAVIGATION BAR */}
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4",
         "bg-[#0A0E1A]/90 backdrop-blur-md border-b border-white/5"
@@ -201,11 +217,13 @@ export default function App() {
         {currentPage === 'Blog' && <BlogPage />}
         {currentPage === 'Contact' && <ContactPage />}
       </main>
+    </>
+    )}
       {/* 7. TESTIMONIALS */}
       <section className="py-24 px-6 bg-white/[0.02]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-['Bebas_Neue'] mb-4">What Our <span className="text-[#00FF87]">Members</span> Say</h2>
+            <h2 className="text-4xl md:text-5xl font-display mb-4">What Our <span className="text-[#00FF87]">Members</span> Say</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -236,7 +254,7 @@ export default function App() {
       <section id="pricing" className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-['Bebas_Neue'] mb-6">Choose Your <span className="text-[#00FF87]">Plan</span></h2>
+            <h2 className="text-4xl md:text-5xl font-display mb-6">Choose Your <span className="text-[#00FF87]">Plan</span></h2>
             
             {/* Toggle System */}
             <div className="flex items-center justify-center gap-4">
@@ -301,7 +319,7 @@ export default function App() {
 
             {/* Elite Plan */}
             <div className="bg-[#151B2B] p-8 rounded-[40px] border border-white/5 flex flex-col">
-              <h3 className="text-3xl font-['Bebas_Neue'] tracking-wide mb-2">Elite</h3>
+              <h3 className="text-3xl font-display tracking-wide mb-2">Elite</h3>
               <p className="text-gray-500 text-sm mb-8">High-stake signals & coaching.</p>
               <div className="text-4xl font-black mb-8">
                 {billingCycle === 'monthly' ? '€49' : '€39'}<span className="text-sm font-normal text-gray-500"> /mo</span>
@@ -327,7 +345,7 @@ export default function App() {
       {/* 9. FAQ Section */}
       <section className="py-24 px-6 bg-white/[0.01]">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-4xl font-['Bebas_Neue'] mb-12 text-center">Frequently Asked <span className="text-[#00FF87]">Questions</span></h2>
+          <h2 className="text-4xl font-display mb-12 text-center">Frequently Asked <span className="text-[#00FF87]">Questions</span></h2>
           <div className="space-y-4">
              {[
                { q: "How accurate are your predictions?", a: "Historically, our data-backed algorithms maintain a success rate between 72% and 89%, depending on the league and season timing." },
@@ -350,7 +368,7 @@ export default function App() {
            <div className="absolute bottom-0 right-0 w-48 h-48 bg-black/5 rounded-full translate-x-1/3 translate-y-1/3" />
 
            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-             <h2 className="text-5xl font-['Bebas_Neue'] mb-4">Get Tomorrow's Top Pick — Free</h2>
+             <h2 className="text-5xl font-display mb-4">Get Tomorrow's Top Pick — Free</h2>
              <p className="font-bold mb-10 max-w-sm mx-auto">Join 3,200+ members getting our #1 daily tip straight to their inbox.</p>
              
               <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto bg-black/10 p-2 rounded-2xl backdrop-blur-sm">
