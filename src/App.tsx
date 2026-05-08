@@ -23,6 +23,14 @@ import { motion, AnimatePresence } from 'motion/react';
 import { CommentSection } from './components/CommentSection';
 import { db, auth } from './lib/firebase';
 import { cn } from './lib/utils';
+import { getDailyPredictions, type MatchPrediction } from './services/geminiService';
+
+// --- Lazy Loads ---
+const StatsPage = React.lazy(() => import('./components/SubPages').then(m => ({ default: m.StatsPage })));
+const PricingPage = React.lazy(() => import('./components/SubPages').then(m => ({ default: m.PricingPage })));
+const BlogPage = React.lazy(() => import('./components/SubPages').then(m => ({ default: m.BlogPage })));
+const BlogPost = React.lazy(() => import('./components/SubPages').then(m => ({ default: m.BlogPost })));
+const ContactPage = React.lazy(() => import('./components/SubPages').then(m => ({ default: m.ContactPage })));
 
 // --- Constants ---
 const APP_NAME = "Wogan Predicts";
@@ -74,6 +82,19 @@ export default function App() {
   const [showExitModal, setShowExitModal] = useState(false);
   const [notifications, setNotifications] = useState<string[]>([]);
   const [currentNotification, setCurrentNotification] = useState<number | null>(null);
+
+  // --- Dynamic Title Support ---
+  useEffect(() => {
+    let title = APP_NAME;
+    if (currentPage !== 'Home') {
+      if (currentPage.startsWith('BlogPost:')) {
+        title = `Blog | ${APP_NAME}`;
+      } else {
+        title = `${currentPage} | ${APP_NAME}`;
+      }
+    }
+    document.title = title;
+  }, [currentPage]);
 
   // --- Daily Refresh Logic ---
   useEffect(() => {
@@ -176,6 +197,7 @@ export default function App() {
             {currentPage !== 'Home' && (
               <button 
                 onClick={goBack}
+                aria-label="Go back to previous page"
                 className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors"
               >
                 <motion.div
@@ -217,7 +239,12 @@ export default function App() {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button 
+            className="md:hidden" 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+          >
             {isMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -263,12 +290,19 @@ export default function App() {
       </nav>
 
       <main className="min-h-[calc(100vh-80px)]">
-        {currentPage === 'Home' && <HomePage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={navigateTo} />}
-        {currentPage === 'Predictions' && <PredictionsPage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={navigateTo} />}
-        {currentPage === 'Stats' && <StatsPage />}
-        {currentPage === 'Pricing' && <PricingPage billingCycle={billingCycle} setBillingCycle={setBillingCycle} />}
-        {currentPage === 'Blog' && <BlogPage />}
-        {currentPage === 'Contact' && <ContactPage />}
+        <React.Suspense fallback={
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="w-8 h-8 border-4 border-[#00FF87] border-t-transparent rounded-full animate-spin" />
+          </div>
+        }>
+          {currentPage === 'Home' && <HomePage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={navigateTo} />}
+          {currentPage === 'Predictions' && <PredictionsPage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={navigateTo} />}
+          {currentPage === 'Stats' && <StatsPage />}
+          {currentPage === 'Pricing' && <PricingPage billingCycle={billingCycle} setBillingCycle={setBillingCycle} />}
+          {currentPage === 'Blog' && <BlogPage onNavigate={navigateTo} />}
+          {currentPage.startsWith('BlogPost:') && <BlogPost postId={currentPage.split(':')[1]} onNavigate={navigateTo} />}
+          {currentPage === 'Contact' && <ContactPage />}
+        </React.Suspense>
       </main>
     </>
     )}
@@ -423,16 +457,22 @@ export default function App() {
            <div className="absolute bottom-0 right-0 w-48 h-48 bg-black/5 rounded-full translate-x-1/3 translate-y-1/3" />
 
            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-             <h2 className="text-5xl font-display mb-4">Get Tomorrow's Top Pick — Free</h2>
+             <h2 id="email-heading" className="text-5xl font-display mb-4">Get Tomorrow's Top Pick — Free</h2>
              <p className="font-bold mb-10 max-w-sm mx-auto">Join 3,200+ members getting our #1 daily tip straight to their inbox.</p>
              
               <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto bg-black/10 p-2 rounded-2xl backdrop-blur-sm">
+                <label htmlFor="email-signup" className="sr-only">Email Address</label>
                 <input 
+                  id="email-signup"
                   type="email" 
                   placeholder="Enter your email" 
                   className="flex-1 bg-transparent border-none focus:ring-0 placeholder:text-black/40 font-bold px-4"
                 />
-                <a href="mailto:komwogan@gmail.com" className="bg-black text-[#00FF87] px-8 py-4 rounded-xl font-bold hover:scale-105 active:scale-95 transition-transform flex items-center justify-center">
+                <a 
+                  href="mailto:komwogan@gmail.com" 
+                  aria-describedby="email-heading"
+                  className="bg-black text-[#00FF87] px-8 py-4 rounded-xl font-bold hover:scale-105 active:scale-95 transition-transform flex items-center justify-center"
+                >
                    Send Me Your Email
                 </a>
              </div>
@@ -453,10 +493,10 @@ export default function App() {
               The smartest football predictions platform. Every Match. Every Day. Using Wogan's expertise to beat the bookies.
             </p>
             <div className="flex gap-4">
-              <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Twitter className="w-5 h-5" /></div>
-              <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Instagram className="w-5 h-5" /></div>
-              <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Youtube className="w-5 h-5" /></div>
-              <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer text-[#00FF87]"><MessageSquare className="w-5 h-5" /></div>
+              <div aria-label="Follow us on Twitter" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Twitter className="w-5 h-5" /></div>
+              <div aria-label="Follow us on Instagram" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Instagram className="w-5 h-5" /></div>
+              <div aria-label="Visit our Youtube channel" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Youtube className="w-5 h-5" /></div>
+              <div aria-label="Contact us via Message" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer text-[#00FF87]"><MessageSquare className="w-5 h-5" /></div>
             </div>
           </div>
           <div>
@@ -856,155 +896,6 @@ function PredictionCard({ prediction, isVipLocked }: { prediction: MatchPredicti
                </a>
             </div>
          )}
-      </div>
-   );
-}
-
-function ContactPage() {
-  return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pt-32 pb-24 px-6 max-w-4xl mx-auto">
-      <div className="bg-[#151B2B] rounded-[48px] p-12 border border-white/5">
-        <h1 className="text-5xl font-display mb-8">Contact <span className="text-[#00FF87]">Us</span></h1>
-        
-        <div className="grid md:grid-cols-2 gap-12 mb-12">
-          <div>
-            <h3 className="text-xl font-bold mb-4 text-[#00FF87]">Get In Touch</h3>
-            <p className="text-gray-400 mb-8 leading-relaxed">
-              Have questions about our plans or need personal betting advice? Reach out to the owner directly.
-            </p>
-            <div className="space-y-6">
-               <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#00FF87]/10 rounded-2xl flex items-center justify-center text-[#00FF87]">
-                     <Star size={24} />
-                  </div>
-                  <div>
-                     <div className="text-xs text-gray-500 font-bold uppercase tracking-widest">Owner</div>
-                     <div className="font-bold text-lg">Komurubuga wogan</div>
-                  </div>
-               </div>
-               <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-[#00FF87]/10 rounded-2xl flex items-center justify-center text-[#00FF87]">
-                     <Mail size={24} />
-                  </div>
-                  <div>
-                     <div className="text-xs text-gray-500 font-bold uppercase tracking-widest">Email Contact</div>
-                     <div className="font-bold text-lg">komwogan@gmail.com</div>
-                  </div>
-               </div>
-            </div>
-          </div>
-
-          <form className="space-y-4">
-             <input type="text" placeholder="Your Name" className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:ring-1 focus:ring-[#00FF87] outline-none" />
-             <input type="email" placeholder="Your Email" className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:ring-1 focus:ring-[#00FF87] outline-none" />
-             <textarea rows={4} placeholder="Your Message" className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:ring-1 focus:ring-[#00FF87] outline-none resize-none"></textarea>
-             <button className="w-full bg-[#00FF87] text-black py-4 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(0,255,135,0.3)] transition-all">
-                Send Message
-             </button>
-          </form>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function PricingPage({ billingCycle, setBillingCycle }: { billingCycle: 'monthly' | 'annual', setBillingCycle: (val: 'monthly' | 'annual') => void }) {
-  const plans = [
-    { name: "Free", price: "0", email: "komwogan@gmail.com" },
-    { name: "Pro", price: billingCycle === 'monthly' ? "19" : "15", email: "datas2342@gmail.com" },
-    { name: "Elite", price: billingCycle === 'monthly' ? "49" : "39", email: "datas2342@gmail.com" }
-  ];
-
-  return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pt-32 pb-24 px-6 max-w-7xl mx-auto">
-       <div className="text-center mb-16">
-          <h1 className="text-6xl font-display mb-6">Membership <span className="text-[#00FF87]">Plans</span></h1>
-          <div className="flex items-center justify-center gap-4">
-              <span className={cn("text-sm font-bold", billingCycle === 'monthly' ? "text-white" : "text-gray-500")}>Monthly</span>
-              <button 
-                onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly')}
-                className="w-14 h-8 bg-white/10 rounded-full p-1"
-              >
-                <div className={cn(
-                  "w-6 h-6 bg-[#00FF87] rounded-full transition-transform",
-                  billingCycle === 'annual' ? "translate-x-6" : "translate-x-0"
-                )} />
-              </button>
-              <span className={cn("text-sm font-bold", billingCycle === 'annual' ? "text-white" : "text-gray-500")}>Annual (-20%)</span>
-          </div>
-       </div>
-
-       <div className="grid md:grid-cols-3 gap-8">
-          {plans.map((p, i) => (
-             <div key={i} className="bg-[#151B2B] p-10 rounded-[48px] border border-white/5 flex flex-col items-center text-center">
-                <h3 className="text-2xl font-bold mb-4">{p.name}</h3>
-                <div className="text-5xl font-black mb-8">€{p.price}<span className="text-sm font-normal text-gray-500">/{billingCycle === 'monthly' ? 'mo' : 'yr'}</span></div>
-                <ul className="space-y-4 mb-12 flex-1 text-gray-400 text-sm">
-                   <li>Daily Match Predictions</li>
-                   <li>Wogan's Confidence Ratings</li>
-                   <li>24/7 Support Access</li>
-                   {p.name !== 'Free' && <li>VIP Match Analysis</li>}
-                   {p.name === 'Elite' && <li>WhatsApp Direct Signals</li>}
-                </ul>
-                <a 
-                  href={p.price === "0" ? `mailto:${p.email}` : `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${p.email}&item_name=${p.name}%20Subscription&amount=${p.price}&currency_code=EUR`}
-                  target="_blank"
-                  className="w-full bg-[#00FF87] text-black py-4 rounded-2xl font-bold hover:scale-105 transition-transform"
-                >
-                   {p.price === "0" ? "Sign Up Free" : `Pay with PayPal`}
-                </a>
-             </div>
-          ))}
-       </div>
-    </motion.div>
-  );
-}
-
-function StatsPage() {
-   return (
-      <div className="pt-32 pb-24 px-6 max-w-7xl mx-auto">
-         <h1 className="text-6xl font-display mb-12 text-center">Our <span className="text-[#00FF87]">Record</span></h1>
-         <div className="bg-[#151B2B] p-12 rounded-[48px] border border-white/5 mb-12">
-            <h2 className="text-3xl font-bold mb-8">Recent History</h2>
-            <div className="space-y-4">
-               {[
-                  { m: "Real Madrid vs Valencia", r: "WON", o: "1.45" },
-                  { m: "Napoli vs AC Milan", r: "WON", o: "1.72" },
-                  { m: "Leverkusen vs Roma", r: "WON", o: "1.80" },
-                  { m: "Bayern vs Stuttgart", r: "LOST", o: "1.65" },
-                  { m: "PSG vs Dortmund", r: "WON", o: "1.55" }
-               ].map((row, i) => (
-                  <div key={i} className="flex justify-between items-center p-6 bg-black/20 rounded-2xl">
-                     <span className="font-bold">{row.m}</span>
-                     <div className="flex gap-4 items-center">
-                        <span className="text-gray-500">Odds: {row.o}</span>
-                        <span className={cn(
-                           "px-3 py-1 rounded text-[10px] font-black",
-                           row.r === "WON" ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-400"
-                        )}>{row.r}</span>
-                     </div>
-                  </div>
-               ))}
-            </div>
-         </div>
-      </div>
-   );
-}
-
-function BlogPage() {
-   return (
-      <div className="pt-32 pb-24 px-6 max-w-7xl mx-auto">
-         <h1 className="text-6xl font-display mb-12">Betting <span className="text-[#00FF87]">Insights</span></h1>
-         <div className="grid md:grid-cols-2 gap-8">
-            {[1,2,3,4].map(i => (
-               <div key={i} className="bg-[#151B2B] p-8 rounded-3xl border border-white/5">
-                  <div className="bg-[#00FF87]/10 text-[#00FF87] px-3 py-1 rounded-full text-[10px] font-bold uppercase mb-4 inline-block">Strategy</div>
-                  <h3 className="text-2xl font-bold mb-4">How Wogan is changing football betting in 2026</h3>
-                  <p className="text-gray-400 mb-6 line-clamp-3">Numerical analysis and deep learning models are now outperforming traditional bookmaker odds by a significant margin...</p>
-                  <button className="text-[#00FF87] font-bold">Read Full Article →</button>
-               </div>
-            ))}
-         </div>
       </div>
    );
 }
