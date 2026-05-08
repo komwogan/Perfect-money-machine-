@@ -1,6 +1,17 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let aiInstance: any = null;
+
+function getAI() {
+  if (!aiInstance) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.warn("GEMINI_API_KEY is not set.");
+    }
+    aiInstance = new GoogleGenAI({ apiKey: apiKey || 'dummy-key' });
+  }
+  return aiInstance;
+}
 
 export interface MatchPrediction {
   match: string;
@@ -15,6 +26,7 @@ export interface MatchPrediction {
 
 export async function getDailyPredictions(): Promise<MatchPrediction[]> {
   try {
+    const ai = getAI();
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: "Find today's top 12 major football matches (Premier League, La Liga, Bundesliga, Serie A, etc.) and provide expert betting predictions for each. Format the output as a JSON array. IMPORTANT: Exactly 6 matches must have 'isVip': false and exactly 6 matches must have 'isVip': true. The analysis should sound like it's from a professional expert named Wogan.",

@@ -10,4 +10,7 @@
   html {
     scroll-behavior: smooth;
   }
+  body {
+    @apply bg-[#0A0E1A] text-white;
+  }
 }

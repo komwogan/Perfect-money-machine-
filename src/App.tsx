@@ -48,15 +48,23 @@ export default function App() {
       const cachedDate = localStorage.getItem('prediction_date');
 
       if (cached && cachedDate === today) {
-        setPredictions(JSON.parse(cached));
-        setIsLoading(false);
-      } else {
-        const data = await getDailyPredictions();
+        try {
+          setPredictions(JSON.parse(cached));
+          setIsLoading(false);
+          return;
+        } catch (e) {
+          console.error("Failed to parse cached predictions", e);
+          localStorage.removeItem('daily_predictions');
+        }
+      } 
+      
+      const data = await getDailyPredictions();
+      if (data && data.length > 0) {
         setPredictions(data);
         localStorage.setItem('daily_predictions', JSON.stringify(data));
         localStorage.setItem('prediction_date', today);
-        setIsLoading(false);
       }
+      setIsLoading(false);
     }
     loadData();
   }, []);
