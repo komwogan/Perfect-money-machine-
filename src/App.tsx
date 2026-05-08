@@ -31,6 +31,41 @@ const BG_COLOR = "#0A0E1A"; // Deep Navy
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('Home');
+  const [history, setHistory] = useState<string[]>(['Home']);
+
+  // --- Browser History Support ---
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      if (e.state && e.state.page) {
+        setCurrentPage(e.state.page);
+      } else {
+        setCurrentPage('Home');
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    
+    // Set initial state
+    window.history.replaceState({ page: 'Home' }, '');
+    
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigateTo = (page: string) => {
+    if (page === currentPage) return;
+    setCurrentPage(page);
+    window.history.pushState({ page }, '', `#${page.toLowerCase()}`);
+    setHistory(prev => [...prev, page]);
+    window.scrollTo(0, 0);
+  };
+
+  const goBack = () => {
+    if (history.length > 1) {
+      window.history.back();
+      // Note: state update happens in popstate listener
+    } else {
+      navigateTo('Home');
+    }
+  };
   const [predictions, setPredictions] = useState<MatchPrediction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
@@ -136,9 +171,26 @@ export default function App() {
         "bg-[#0A0E1A]/90 backdrop-blur-md border-b border-white/5"
       )}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentPage('Home')}>
-            <Trophy className="text-[#00FF87] w-8 h-8 drop-shadow-[0_0_10px_rgba(0,255,135,0.4)]" />
-            <span className="text-xl font-bold tracking-tight text-white">{APP_NAME}</span>
+          <div className="flex items-center gap-4">
+            {currentPage !== 'Home' && (
+              <button 
+                onClick={goBack}
+                className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors"
+              >
+                <motion.div
+                  initial={{ x: 5 }}
+                  animate={{ x: 0 }}
+                  className="flex items-center gap-1"
+                >
+                  <ChevronDown className="w-5 h-5 rotate-90" />
+                  <span className="text-sm font-bold uppercase tracking-wider hidden sm:inline">Back</span>
+                </motion.div>
+              </button>
+            )}
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigateTo('Home')}>
+              <Trophy className="text-[#00FF87] w-8 h-8 drop-shadow-[0_0_10px_rgba(0,255,135,0.4)]" />
+              <span className="text-xl font-bold tracking-tight text-white">{APP_NAME}</span>
+            </div>
           </div>
 
           {/* Desktop Nav */}
@@ -150,13 +202,13 @@ export default function App() {
                   "text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#00FF87]",
                   currentPage === link ? "text-[#00FF87]" : "text-gray-400"
                 )}
-                onClick={() => setCurrentPage(link)}
+                onClick={() => navigateTo(link)}
               >
                 {link}
               </button>
             ))}
             <button 
-              onClick={() => setCurrentPage('Predictions')}
+              onClick={() => navigateTo('Predictions')}
               className="bg-[#00FF87] text-black px-6 py-2.5 rounded-full font-bold text-sm transition-transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(0,255,135,0.3)]"
             >
               Get Free Picks →
@@ -187,7 +239,7 @@ export default function App() {
                       currentPage === link ? "text-[#00FF87]" : "text-white"
                     )}
                     onClick={() => {
-                      setCurrentPage(link);
+                      navigateTo(link);
                       setIsMenuOpen(false);
                     }}
                   >
@@ -196,7 +248,7 @@ export default function App() {
                 ))}
                 <button 
                   onClick={() => {
-                    setCurrentPage('Predictions');
+                    navigateTo('Predictions');
                     setIsMenuOpen(false);
                   }}
                   className="bg-[#00FF87] text-black w-full py-3 rounded-lg font-bold"
@@ -210,8 +262,8 @@ export default function App() {
       </nav>
 
       <main className="min-h-[calc(100vh-80px)]">
-        {currentPage === 'Home' && <HomePage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={setCurrentPage} />}
-        {currentPage === 'Predictions' && <PredictionsPage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} />}
+        {currentPage === 'Home' && <HomePage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={navigateTo} />}
+        {currentPage === 'Predictions' && <PredictionsPage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={navigateTo} />}
         {currentPage === 'Stats' && <StatsPage />}
         {currentPage === 'Pricing' && <PricingPage billingCycle={billingCycle} setBillingCycle={setBillingCycle} />}
         {currentPage === 'Blog' && <BlogPage />}
@@ -390,7 +442,7 @@ export default function App() {
       <footer className="py-20 px-6 border-t border-white/5 bg-[#070B14]">
         <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-20">
           <div className="col-span-2">
-          <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => setCurrentPage('Home')}>
+          <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => navigateTo('Home')}>
             <Trophy className="text-[#00FF87] w-8 h-8" />
             <span className="text-lg font-bold tracking-tight hover:text-[#00FF87] transition-colors">{APP_NAME}</span>
           </div>
@@ -407,10 +459,10 @@ export default function App() {
           <div>
             <h4 className="font-bold mb-6 text-[#00FF87]">Quick Links</h4>
             <ul className="space-y-4 text-sm text-gray-500">
-              <li><button onClick={() => setCurrentPage('Home')} className="hover:text-white transition-colors">Home</button></li>
-              <li><button onClick={() => setCurrentPage('Predictions')} className="hover:text-white transition-colors">Predictions</button></li>
-              <li><button onClick={() => setCurrentPage('Stats')} className="hover:text-white transition-colors">Stats</button></li>
-              <li><button onClick={() => setCurrentPage('Pricing')} className="hover:text-white transition-colors">Pricing</button></li>
+              <li><button onClick={() => navigateTo('Home')} className="hover:text-white transition-colors">Home</button></li>
+              <li><button onClick={() => navigateTo('Predictions')} className="hover:text-white transition-colors">Predictions</button></li>
+              <li><button onClick={() => navigateTo('Stats')} className="hover:text-white transition-colors">Stats</button></li>
+              <li><button onClick={() => navigateTo('Pricing')} className="hover:text-white transition-colors">Pricing</button></li>
             </ul>
           </div>
           <div>
@@ -452,7 +504,7 @@ export default function App() {
       {/* Mobile Sticky CTA */}
       <div className="md:hidden fixed bottom-4 left-4 right-4 z-[55]">
          <button 
-            onClick={() => setCurrentPage('Predictions')}
+            onClick={() => navigateTo('Predictions')}
             className="w-full bg-[#00FF87] text-black py-4 rounded-2xl font-bold shadow-2xl flex items-center justify-center gap-2 active:scale-95 transition-transform"
          >
             See Today's Picks →
@@ -673,7 +725,7 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
   );
 }
 
-function PredictionsPage({ predictions, isLoading, timeLeft }: { predictions: MatchPrediction[], isLoading: boolean, timeLeft: any }) {
+function PredictionsPage({ predictions, isLoading, timeLeft, onNavigate }: { predictions: MatchPrediction[], isLoading: boolean, timeLeft: any, onNavigate: (page: string) => void }) {
   const freeMatches = predictions.filter(p => !p.isVip).slice(0, 6);
   const vipMatches = predictions.filter(p => p.isVip).slice(0, 6);
 
