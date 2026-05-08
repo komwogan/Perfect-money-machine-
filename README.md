@@ -1,20 +1,57 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# WoganPredicts
 
-# Run and deploy your AI Studio app
+Expert football predictions backed by data, Wogan's specialized algorithms, and 10+ years of match analysis.
 
-This contains everything you need to run your app locally.
+## How to run this project locally
 
-View your app in AI Studio: https://ai.studio/apps/6513d62d-9e29-4e84-809d-02a3f5aadc61
+This project is built using **React**, **Vite**, and **Tailwind CSS**. To run it on your local machine, you need to have **Node.js** installed.
 
-## Run Locally
+1. **Clone the repository** (if you haven't already):
+   ```bash
+   git clone <your-repo-url>
+   cd <your-repo-name>
+   ```
 
-**Prerequisites:**  Node.js
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
+3. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
+   Open your browser and navigate to `http://localhost:3000`.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## How to deploy to GitHub Pages
+
+Since this is a Vite project, you cannot just open the `index.html` file in your browser. You need to build the project and host the static files.
+
+### Option 1: Using GitHub Actions (Recommended)
+
+This repository includes a GitHub Action to automatically deploy your site to GitHub Pages whenever you push to the `main` branch.
+
+1. Go to your repository settings on GitHub.
+2. Click on **Pages** in the left sidebar.
+3. Under **Build and deployment** > **Source**, select **GitHub Actions**.
+4. The site will automatically build and deploy on your next push.
+
+### Option 2: Manual Build
+
+If you want to build the project manually:
+1. Run `npm run build`.
+2. The static files will be generated in the `dist` folder.
+3. You can host the contents of the `dist` folder on any static hosting service (GitHub Pages, Netlify, Vercel, etc.).
+
+## AI Predictions
+
+The app uses the Gemini API for dynamic predictions. To enable this features locally:
+1. Create a `.env` file in the root directory.
+2. Add your Gemini API key:
+   ```env
+   GEMINI_API_KEY=your_api_key_here
+   ```
+If no key is provided, the app will use high-quality fallback predictions.
+
+---
+© 2026 WoganPredicts. All rights, maintenance and operations to this website are owned by Komurubuga wogan.
