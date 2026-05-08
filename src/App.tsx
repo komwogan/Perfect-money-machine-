@@ -899,7 +899,12 @@ function StatsPage() {
                   { m: "Napoli vs AC Milan", r: "WON", o: "1.72" },
                   { m: "Leverkusen vs Roma", r: "WON", o: "1.80" },
                   { m: "Bayern vs Stuttgart", r: "LOST", o: "1.65" },
-                  { m: "PSG vs Dortmund", r: "WON", o: "1.55" }
+                  { m: "PSG vs Dortmund", r: "WON", o: "1.55" },
+                  { m: "Man City vs Arsenal", r: "WON", o: "1.95" },
+                  { m: "Inter Milan vs Lazio", r: "WON", o: "1.68" },
+                  { m: "Barcelona vs Sociedad", r: "WON", o: "1.52" },
+                  { m: "Chelsea vs Tottenham", r: "LOST", o: "2.10" },
+                  { m: "Atalanta vs Juventus", r: "WON", o: "2.25" }
                ].map((row, i) => (
                   <div key={i} className="flex justify-between items-center p-6 bg-black/20 rounded-2xl">
                      <span className="font-bold">{row.m}</span>
