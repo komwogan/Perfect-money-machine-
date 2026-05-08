@@ -451,7 +451,10 @@ export default function App() {
 
       {/* Mobile Sticky CTA */}
       <div className="md:hidden fixed bottom-4 left-4 right-4 z-[55]">
-         <button className="w-full bg-[#00FF87] text-black py-4 rounded-2xl font-bold shadow-2xl flex items-center justify-center gap-2 active:scale-95 transition-transform">
+         <button 
+            onClick={() => setCurrentPage('Predictions')}
+            className="w-full bg-[#00FF87] text-black py-4 rounded-2xl font-bold shadow-2xl flex items-center justify-center gap-2 active:scale-95 transition-transform"
+         >
             See Today's Picks →
          </button>
       </div>
