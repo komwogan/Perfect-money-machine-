@@ -289,10 +289,10 @@ export default function App() {
         </AnimatePresence>
       </nav>
 
-      <main className="min-h-[calc(100vh-80px)]">
+      <main className="min-h-[calc(100vh-80px)] flex flex-col" style={{ containIntrinsicSize: '0 800px', contentVisibility: 'auto' }}>
         <React.Suspense fallback={
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="w-8 h-8 border-4 border-[#00FF87] border-t-transparent rounded-full animate-spin" />
+          <div className="flex items-center justify-center min-h-[600px]">
+             <div className="w-12 h-12 border-4 border-[#00FF87] border-t-transparent rounded-full animate-spin" aria-label="Loading page content" />
           </div>
         }>
           {currentPage === 'Home' && <HomePage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={navigateTo} />}
@@ -319,19 +319,19 @@ export default function App() {
               { name: "James T.", date: "Dec 2023", text: "I like that it's consistent. No hype, just data. The Telegram alerts for the Elite plan are lightning fast." },
               { name: "Marco L.", date: "Jan 2025", text: "Customer support is top-notch. I had issues with my referral and they fixed it in 10 minutes. Also the win rate is insane." }
             ].map((t, i) => (
-              <div key={i} className="bg-[#151B2B] p-8 rounded-3xl border border-white/5 relative">
-                <div className="flex gap-1 mb-6">
-                  {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 fill-[#00FF87] text-[#00FF87]" />)}
+              <figure key={i} className="bg-[#151B2B] p-8 rounded-3xl border border-white/5 relative">
+                <div className="flex gap-1 mb-6" aria-label="5 star rating">
+                  {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 fill-[#00FF87] text-[#00FF87]" aria-hidden="true" />)}
                 </div>
-                <p className="text-gray-300 mb-8 italic leading-relaxed">"{t.text}"</p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center font-bold text-[#00FF87]">{t.name[0]}</div>
+                <blockquote className="text-gray-300 mb-8 italic leading-relaxed">"{t.text}"</blockquote>
+                <figcaption className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center font-bold text-[#00FF87]" aria-hidden="true">{t.name[0]}</div>
                   <div>
-                    <div className="font-bold">{t.name}</div>
-                    <div className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Member since {t.date}</div>
+                    <div className="font-bold text-white">{t.name}</div>
+                    <div className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Member since {t.date}</div>
                   </div>
-                </div>
-              </div>
+                </figcaption>
+              </figure>
             ))}
           </div>
         </div>
@@ -366,15 +366,19 @@ export default function App() {
             {/* Free Plan */}
             <div className="bg-[#151B2B] p-8 rounded-[40px] border border-white/5 flex flex-col">
               <h3 className="text-2xl font-bold mb-2">Free</h3>
-              <p className="text-gray-500 text-sm mb-8">Basic insights for casual bettors.</p>
-              <div className="text-4xl font-black mb-8">€0<span className="text-sm font-normal text-gray-500"> /mo</span></div>
+              <p className="text-gray-400 text-sm mb-8">Basic insights for casual bettors.</p>
+              <div className="text-4xl font-black mb-8 text-white">€0<span className="text-sm font-normal text-gray-500"> /mo</span></div>
               <ul className="space-y-4 mb-10 flex-1">
-                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" /> 2-3 Free Tips / Day</li>
-                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" /> Basic Match Stats</li>
-                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" /> Email Newsletter</li>
-                 <li className="flex items-center gap-3 text-sm text-gray-600"><X className="w-5 h-5" /> VIP Predictions</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> 2-3 Free Tips / Day</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Basic Match Stats</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Email Newsletter</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-600"><X className="w-5 h-5" aria-hidden="true" /> VIP Predictions</li>
               </ul>
-              <button className="w-full py-4 border border-white/10 rounded-2xl font-bold hover:bg-white/5 transition-colors">
+              <button 
+                onClick={() => navigateTo('Predictions')}
+                className="w-full py-4 border border-white/10 rounded-2xl font-bold hover:bg-white/5 transition-colors"
+                aria-label="Get started with free plan"
+              >
                 Get Started
               </button>
             </div>
@@ -384,21 +388,22 @@ export default function App() {
               <div className="absolute top-0 right-10 -translate-y-1/2 bg-[#00FF87] text-black px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
                 Most Popular
               </div>
-              <h3 className="text-2xl font-bold mb-2">Pro</h3>
-              <p className="text-gray-500 text-sm mb-8">Serious data for consistent growth.</p>
-              <div className="text-4xl font-black mb-8">
+              <h3 className="text-2xl font-bold mb-2 text-white">Pro</h3>
+              <p className="text-gray-400 text-sm mb-8">Serious data for consistent growth.</p>
+              <div className="text-4xl font-black mb-8 text-white">
                 {billingCycle === 'monthly' ? '€19' : '€15'}<span className="text-sm font-normal text-gray-500"> /mo</span>
               </div>
               <ul className="space-y-4 mb-10 flex-1">
-                 <li className="flex items-center gap-3 text-sm"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" /> All Daily Tips (10+)</li>
-                 <li className="flex items-center gap-3 text-sm"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" /> Confidence Ratings</li>
-                 <li className="flex items-center gap-3 text-sm"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" /> Stats Dashboard Access</li>
-                 <li className="flex items-center gap-3 text-sm"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" /> Telegram Community</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-200"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> All Daily Tips (10+)</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-200"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Confidence Ratings</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-200"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Stats Dashboard Access</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-200"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Telegram Community</li>
               </ul>
               <a 
                 href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=datas2342@gmail.com&item_name=Pro%20Membership&amount=19&currency_code=EUR"
                 target="_blank"
                 className="w-full py-4 bg-[#00FF87] text-black rounded-2xl font-bold flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(0,255,135,0.5)] transition-all"
+                aria-label={`Join Pro Plan for €${billingCycle === 'monthly' ? '19' : '15'} per month`}
               >
                 Join Now <ArrowRight className="w-4 h-4" />
               </a>
@@ -406,21 +411,22 @@ export default function App() {
 
             {/* Elite Plan */}
             <div className="bg-[#151B2B] p-8 rounded-[40px] border border-white/5 flex flex-col">
-              <h3 className="text-3xl font-display tracking-wide mb-2">Elite</h3>
-              <p className="text-gray-500 text-sm mb-8">High-stake signals & coaching.</p>
-              <div className="text-4xl font-black mb-8">
+              <h3 className="text-3xl font-display tracking-wide mb-2 text-white">Elite</h3>
+              <p className="text-gray-400 text-sm mb-8">High-stake signals & coaching.</p>
+              <div className="text-4xl font-black mb-8 text-white">
                 {billingCycle === 'monthly' ? '€49' : '€39'}<span className="text-sm font-normal text-gray-500"> /mo</span>
               </div>
               <ul className="space-y-4 mb-10 flex-1">
-                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" /> Everything in PRO</li>
-                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" /> WhatsApp Direct Alerts</li>
-                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" /> Personal Betting Advisor</li>
-                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" /> High-Stake VIP Tips</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Everything in PRO</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> WhatsApp Direct Alerts</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Personal Betting Advisor</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> High-Stake VIP Tips</li>
               </ul>
               <a 
                 href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=datas2342@gmail.com&item_name=Elite%20Membership&amount=49&currency_code=EUR"
                 target="_blank"
-                className="w-full py-4 bg-white/5 border border-white/10 rounded-2xl font-bold hover:bg-white/10 transition-colors flex items-center justify-center"
+                className="w-full py-4 bg-white/5 border border-white/10 rounded-2xl font-bold hover:bg-white/10 transition-colors flex items-center justify-center text-white"
+                aria-label={`Join Elite Plan for €${billingCycle === 'monthly' ? '49' : '39'} per month`}
               >
                 Become Elite
               </a>
@@ -486,22 +492,22 @@ export default function App() {
         <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-20">
           <div className="col-span-2">
           <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => navigateTo('Home')}>
-            <Trophy className="text-[#00FF87] w-8 h-8" />
+            <Trophy className="text-[#00FF87] w-8 h-8" aria-hidden="true" />
             <span className="text-lg font-bold tracking-tight hover:text-[#00FF87] transition-colors">{APP_NAME}</span>
           </div>
-            <p className="text-gray-500 max-w-sm leading-relaxed mb-8">
+            <p className="text-gray-400 max-w-sm leading-relaxed mb-8">
               The smartest football predictions platform. Every Match. Every Day. Using Wogan's expertise to beat the bookies.
             </p>
             <div className="flex gap-4">
-              <div aria-label="Follow us on Twitter" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Twitter className="w-5 h-5" /></div>
-              <div aria-label="Follow us on Instagram" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Instagram className="w-5 h-5" /></div>
-              <div aria-label="Visit our Youtube channel" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Youtube className="w-5 h-5" /></div>
-              <div aria-label="Contact us via Message" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer text-[#00FF87]"><MessageSquare className="w-5 h-5" /></div>
+              <button aria-label="Follow us on Twitter" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Twitter className="w-5 h-5" /></button>
+              <button aria-label="Follow us on Instagram" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Instagram className="w-5 h-5" /></button>
+              <button aria-label="Visit our Youtube channel" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer"><Youtube className="w-5 h-5" /></button>
+              <button aria-label="Contact us via Message" className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00FF87] hover:text-black transition-all cursor-pointer text-[#00FF87]"><MessageSquare className="w-5 h-5" /></button>
             </div>
           </div>
           <div>
-            <h4 className="font-bold mb-6 text-[#00FF87]">Quick Links</h4>
-            <ul className="space-y-4 text-sm text-gray-500">
+            <h2 className="font-bold mb-6 text-[#00FF87]">Quick Links</h2>
+            <ul className="space-y-4 text-sm text-gray-400">
               <li><button onClick={() => navigateTo('Home')} className="hover:text-white transition-colors">Home</button></li>
               <li><button onClick={() => navigateTo('Predictions')} className="hover:text-white transition-colors">Predictions</button></li>
               <li><button onClick={() => navigateTo('Stats')} className="hover:text-white transition-colors">Stats</button></li>
@@ -509,10 +515,10 @@ export default function App() {
             </ul>
           </div>
           <div>
-            <h4 className="font-bold mb-6 text-[#00FF87]">Contact</h4>
-            <ul className="space-y-4 text-sm text-gray-500">
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4" /> komwogan@gmail.com</li>
-              <li className="flex items-center gap-2"><MessageSquare className="w-4 h-4" /> Live Chat 24/7</li>
+            <h2 className="font-bold mb-6 text-[#00FF87]">Contact</h2>
+            <ul className="space-y-4 text-sm text-gray-400">
+              <li className="flex items-center gap-2"><Mail className="w-4 h-4" aria-hidden="true" /> komwogan@gmail.com</li>
+              <li className="flex items-center gap-2"><MessageSquare className="w-4 h-4" aria-hidden="true" /> Live Chat 24/7</li>
             </ul>
           </div>
         </div>
@@ -529,17 +535,19 @@ export default function App() {
       <AnimatePresence>
         {currentNotification !== null && (
           <motion.div 
+            role="status"
+            aria-live="polite"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
             className="fixed bottom-6 left-6 z-[60] bg-white text-black p-4 rounded-xl shadow-2xl flex items-center gap-3 pr-8"
           >
-            <div className="w-8 h-8 bg-[#00FF87] rounded-full flex items-center justify-center font-bold">W</div>
+            <div className="w-8 h-8 bg-[#00FF87] rounded-full flex items-center justify-center font-bold" aria-hidden="true">W</div>
             <div>
               <div className="text-xs font-bold leading-tight">{notifications[currentNotification]}</div>
-              <div className="text-[10px] text-gray-400">Just now</div>
+              <div className="text-[10px] text-gray-500">Just now</div>
             </div>
-            <button className="absolute top-2 right-2 text-gray-300" onClick={() => setCurrentNotification(null)}><X size={12} /></button>
+            <button className="absolute top-2 right-2 text-gray-300 hover:text-black p-1" aria-label="Close notification" onClick={() => setCurrentNotification(null)}><X size={12} /></button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -608,7 +616,7 @@ function FaqItem({ question, answer }: { question: string, answer: string }) {
         className="w-full flex items-center justify-between p-6"
       >
         <span className="font-bold text-sm md:text-base pr-4">{question}</span>
-        <ChevronDown className={cn("w-5 h-5 text-gray-500 transition-transform", isOpen && "rotate-180")} />
+        <ChevronDown className={cn("w-5 h-5 text-gray-400 transition-transform", isOpen && "rotate-180")} aria-hidden="true" />
       </button>
       <AnimatePresence>
         {isOpen && (
@@ -782,8 +790,8 @@ function PredictionsPage({ predictions, isLoading, timeLeft, onNavigate }: { pre
         <div className="bg-[#151B2B] p-4 rounded-2xl flex items-center gap-4 border border-white/5">
            <Clock className="w-10 h-10 text-[#00FF87]" />
            <div>
-              <div className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Next Wogan Refresh</div>
-              <div className="text-2xl font-mono font-bold">{timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}</div>
+              <div className="text-[10px] text-gray-400 uppercase font-black tracking-widest">Next Wogan Refresh</div>
+              <div className="text-2xl font-mono font-bold text-white">{timeLeft.hours}:{timeLeft.minutes}:{timeLeft.seconds}</div>
            </div>
         </div>
       </div>
@@ -793,7 +801,7 @@ function PredictionsPage({ predictions, isLoading, timeLeft, onNavigate }: { pre
           <h2 className="text-3xl font-display mb-8 flex items-center gap-4">
              <span className="text-white">Free Daily Picks</span>
              <div className="h-1 flex-1 bg-white/5 rounded-full" />
-             <span className="text-sm font-bold text-gray-500">6 MATCHES</span>
+             <span className="text-sm font-bold text-gray-400">6 MATCHES</span>
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
              {freeMatches.map((p, idx) => (
@@ -840,7 +848,7 @@ function PredictionCard({ prediction, isVipLocked }: { prediction: MatchPredicti
    return (
       <div className="bg-[#151B2B] rounded-3xl p-6 border border-white/5 relative group overflow-hidden">
          <div className="flex justify-between items-start mb-6">
-            <span className="text-[10px] uppercase font-black text-gray-500 tracking-widest">{prediction.league}</span>
+            <span className="text-[10px] uppercase font-black text-gray-400 tracking-widest">{prediction.league}</span>
             <span className={cn(
                "text-[10px] font-black px-2 py-0.5 rounded",
                prediction.isVip ? "bg-[#00FF87] text-black" : "bg-white/10 text-white"
@@ -848,33 +856,33 @@ function PredictionCard({ prediction, isVipLocked }: { prediction: MatchPredicti
                {prediction.isVip ? "VIP" : "FREE"}
             </span>
          </div>
-         <h3 className="text-xl font-bold mb-4">{prediction.match}</h3>
+         <h3 className="text-xl font-bold mb-4 text-white">{prediction.match}</h3>
          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-black/20 p-3 rounded-xl">
-               <div className="text-[10px] text-gray-500 uppercase font-bold mb-1">Tip</div>
+            <div className="bg-black/20 p-3 rounded-xl border border-white/5">
+               <div className="text-[10px] text-gray-400 uppercase font-bold mb-1">Tip</div>
                <div className="font-bold text-[#00FF87]">{prediction.tip}</div>
             </div>
-            <div className="bg-black/20 p-3 rounded-xl">
-               <div className="text-[10px] text-gray-500 uppercase font-bold mb-1">Odds</div>
-               <div className="font-bold">{prediction.odds}</div>
+            <div className="bg-black/20 p-3 rounded-xl border border-white/5">
+               <div className="text-[10px] text-gray-400 uppercase font-bold mb-1">Odds</div>
+               <div className="font-bold text-white">{prediction.odds}</div>
             </div>
          </div>
          
          <div className="mt-6">
             <div className="flex justify-between items-center mb-2">
                <div className="flex flex-col">
-                  <span className="text-[10px] uppercase font-bold text-gray-500">Wogan's Confidence</span>
+                  <span className="text-[10px] uppercase font-bold text-gray-400">Wogan's Confidence</span>
                   {renderStars()}
                </div>
                <span className="text-[#00FF87] font-mono text-sm">{prediction.confidence}%</span>
             </div>
             <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-4">
-               <div className="h-full bg-[#00FF87]" style={{ width: `${prediction.confidence}%` }} />
+               <div className="h-full bg-[#00FF87]" style={{ width: `${prediction.confidence}%` }} aria-hidden="true" />
             </div>
             
             <div className="bg-[#00FF87]/5 border border-[#00FF87]/10 p-3 rounded-xl">
                <div className="text-[10px] text-[#00FF87] uppercase font-black mb-1 flex items-center gap-1">
-                  <Zap size={10} /> Wogan's Reasoning
+                  <Zap size={10} aria-hidden="true" /> Wogan's Reasoning
                </div>
                <p className="text-[11px] text-gray-400 italic line-clamp-3 leading-relaxed">
                   {prediction.analysis}
@@ -883,14 +891,15 @@ function PredictionCard({ prediction, isVipLocked }: { prediction: MatchPredicti
          </div>
 
          {isVipLocked && (
-            <div className="absolute inset-0 bg-[#0A0E1A]/90 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center">
-               <Lock className="w-12 h-12 text-[#00FF87] mb-4" />
-               <h4 className="font-bold mb-2">VIP Access Only</h4>
-               <p className="text-xs text-gray-400 mb-6">Upgrade to unlock Wogan's detailed analysis and prediction.</p>
+            <div className="absolute inset-0 bg-[#0A0E1A]/95 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center animate-in fade-in duration-300">
+               <Lock className="w-12 h-12 text-[#00FF87] mb-4" aria-hidden="true" />
+               <h4 className="font-bold mb-2 text-white">VIP Access Only</h4>
+               <p className="text-xs text-gray-400 mb-6 leading-relaxed">Upgrade to unlock Wogan's detailed analysis and prediction.</p>
                <a 
                  href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=datas2342@gmail.com&item_name=Pro%20Upgrade&amount=19&currency_code=EUR"
                  target="_blank"
-                 className="bg-[#00FF87] text-black w-full py-3 rounded-xl font-bold text-sm"
+                 className="bg-[#00FF87] text-black w-full py-3 rounded-xl font-bold text-sm hover:scale-105 active:scale-95 transition-transform flex items-center justify-center"
+                 aria-label="Upgrade to Pro for VIP match access"
                >
                  Upgrade Now
                </a>

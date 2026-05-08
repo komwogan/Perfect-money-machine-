@@ -22,7 +22,7 @@ export function ContactPage() {
                   </div>
                   <div>
                      <div className="text-xs text-gray-400 font-bold uppercase tracking-widest">Owner</div>
-                     <div className="font-bold text-lg">Komurubuga wogan</div>
+                     <div className="font-bold text-lg text-white">Komurubuga wogan</div>
                   </div>
                </div>
                <div className="flex items-center gap-4">
@@ -31,7 +31,7 @@ export function ContactPage() {
                   </div>
                   <div>
                      <div className="text-xs text-gray-400 font-bold uppercase tracking-widest">Email Contact</div>
-                     <div className="font-bold text-lg">komwogan@gmail.com</div>
+                     <div className="font-bold text-lg text-white">komwogan@gmail.com</div>
                   </div>
                </div>
             </div>
@@ -102,7 +102,8 @@ export function PricingPage({ billingCycle, setBillingCycle }: { billingCycle: '
                 <a 
                   href={p.price === "0" ? `mailto:${p.email}` : `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${p.email}&item_name=${p.name}%20Subscription&amount=${p.price}&currency_code=EUR`}
                   target="_blank"
-                  className="w-full bg-[#00FF87] text-black py-4 rounded-2xl font-bold hover:scale-105 transition-transform"
+                  className="w-full bg-[#00FF87] text-black py-4 rounded-2xl font-bold hover:scale-105 transition-transform flex items-center justify-center"
+                  aria-label={`Subscribe to ${p.name} plan for €${p.price}`}
                 >
                    {p.price === "0" ? "Sign Up Free" : `Pay with PayPal`}
                 </a>
@@ -245,16 +246,17 @@ export function BlogPost({ postId, onNavigate }: { postId: string, onNavigate: (
       />
 
       <div className="mt-16 pt-16 border-t border-white/5">
-         <h3 className="text-2xl font-bold mb-8">Related Articles</h3>
+         <h2 className="text-2xl font-bold mb-8">Related Articles</h2>
          <div className="grid sm:grid-cols-2 gap-6">
             {BLOG_POSTS.filter(p => p.id !== postId).slice(0, 2).map(p => (
                <button 
                   key={p.id}
                   onClick={() => onNavigate(`BlogPost:${p.id}`)}
                   className="bg-white/5 p-6 rounded-2xl border border-white/5 text-left hover:border-[#00FF87]/30 transition-colors"
+                  aria-label={`Read related article: ${p.title}`}
                >
                   <div className="text-[10px] font-black uppercase text-[#00FF87] mb-2">{p.category}</div>
-                  <div className="font-bold">{p.title}</div>
+                  <div className="font-bold text-white">{p.title}</div>
                </button>
             ))}
          </div>
