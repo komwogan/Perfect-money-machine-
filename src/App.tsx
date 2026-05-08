@@ -24,7 +24,7 @@ import { getDailyPredictions, type MatchPrediction } from './services/geminiServ
 import { cn } from './lib/utils';
 
 // --- Constants ---
-const APP_NAME = "WoganPredicts";
+const APP_NAME = "Wogan Predicts";
 const ACCENT_COLOR = "#00FF87"; // Electric Green
 const BG_COLOR = "#0A0E1A"; // Deep Navy
 
@@ -121,7 +121,7 @@ export default function App() {
       {isLoading ? (
         <div className="fixed inset-0 bg-[#0A0E1A] flex flex-col items-center justify-center z-[100]">
           <Trophy className="text-[#00FF87] w-16 h-16 mb-4 animate-pulse" />
-          <div className="text-xl font-display tracking-widest animate-pulse">WOGAN PREDICTS</div>
+          <div className="text-base font-medium tracking-widest animate-pulse">WOGAN PREDICTS</div>
           <div className="mt-8 flex gap-2">
             <div className="w-2 h-2 bg-[#00FF87] rounded-full animate-bounce" />
             <div className="w-2 h-2 bg-[#00FF87] rounded-full animate-bounce [animation-delay:0.2s]" />
@@ -137,8 +137,8 @@ export default function App() {
       )}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentPage('Home')}>
-            <Trophy className="text-[#00FF87] w-10 h-10 drop-shadow-[0_0_10px_rgba(0,255,135,0.5)]" />
-            <span className="text-4xl font-black font-display tracking-tighter text-white drop-shadow-sm">{APP_NAME}</span>
+            <Trophy className="text-[#00FF87] w-8 h-8 drop-shadow-[0_0_10px_rgba(0,255,135,0.4)]" />
+            <span className="text-xl font-bold tracking-tight text-white">{APP_NAME}</span>
           </div>
 
           {/* Desktop Nav */}
@@ -392,7 +392,7 @@ export default function App() {
           <div className="col-span-2">
           <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => setCurrentPage('Home')}>
             <Trophy className="text-[#00FF87] w-8 h-8" />
-            <span className="text-2xl font-display tracking-wider hover:text-[#00FF87] transition-colors">{APP_NAME}</span>
+            <span className="text-lg font-bold tracking-tight hover:text-[#00FF87] transition-colors">{APP_NAME}</span>
           </div>
             <p className="text-gray-500 max-w-sm leading-relaxed mb-8">
               The smartest football predictions platform. Every Match. Every Day. Using Wogan's expertise to beat the bookies.
