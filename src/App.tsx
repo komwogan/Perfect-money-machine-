@@ -696,6 +696,23 @@ function PredictionsPage({ predictions, isLoading, timeLeft }: { predictions: Ma
 }
 
 function PredictionCard({ prediction, isVipLocked }: { prediction: MatchPrediction, isVipLocked?: boolean }) {
+   const renderStars = () => {
+      const starCount = Math.round(prediction.confidence / 20);
+      return (
+         <div className="flex gap-0.5">
+            {[...Array(5)].map((_, i) => (
+               <Star 
+                  key={i} 
+                  size={10} 
+                  className={cn(
+                     i < starCount ? "text-[#00FF87] fill-[#00FF87]" : "text-gray-700"
+                  )} 
+               />
+            ))}
+         </div>
+      );
+   };
+
    return (
       <div className="bg-[#151B2B] rounded-3xl p-6 border border-white/5 relative group overflow-hidden">
          <div className="flex justify-between items-start mb-6">
@@ -720,9 +737,12 @@ function PredictionCard({ prediction, isVipLocked }: { prediction: MatchPredicti
          </div>
          
          <div className="mt-6">
-            <div className="flex justify-between text-[10px] uppercase font-bold text-gray-500 mb-2">
-               <span>Wogan's Confidence</span>
-               <span className="text-[#00FF87]">{prediction.confidence}%</span>
+            <div className="flex justify-between items-center mb-2">
+               <div className="flex flex-col">
+                  <span className="text-[10px] uppercase font-bold text-gray-500">Wogan's Confidence</span>
+                  {renderStars()}
+               </div>
+               <span className="text-[#00FF87] font-mono text-sm">{prediction.confidence}%</span>
             </div>
             <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-4">
                <div className="h-full bg-[#00FF87]" style={{ width: `${prediction.confidence}%` }} />
