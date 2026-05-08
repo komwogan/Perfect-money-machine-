@@ -1,17 +1,9 @@
 import { GoogleGenAI, Type } from "@google/genai";
+import type { MatchPrediction } from '../types';
+
+export type { MatchPrediction };
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-export interface MatchPrediction {
-  match: string;
-  league: string;
-  tip: string;
-  odds: string;
-  confidence: number;
-  isVip: boolean;
-  time: string;
-  analysis: string;
-}
 
 export async function getDailyPredictions(): Promise<MatchPrediction[]> {
   try {
