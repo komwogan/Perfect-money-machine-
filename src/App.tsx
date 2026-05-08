@@ -32,28 +32,7 @@ const BG_COLOR = "#0A0E1A"; // Deep Navy
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('Home');
-  const [pageHistory, setPageHistory] = useState<string[]>(['Home']);
   const [predictions, setPredictions] = useState<MatchPrediction[]>([]);
-
-  // Custom navigation to track history
-  const navigateTo = (page: string) => {
-    if (page !== currentPage) {
-      setPageHistory(prev => [...prev, page]);
-      setCurrentPage(page);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const goBack = () => {
-    if (pageHistory.length > 1) {
-      const newHistory = [...pageHistory];
-      newHistory.pop(); // Remove current page
-      const prevPage = newHistory[newHistory.length - 1];
-      setPageHistory(newHistory);
-      setCurrentPage(prevPage);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
   const [isLoading, setIsLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
   const [timeLeft, setTimeLeft] = useState({ hours: 23, minutes: 59, seconds: 59 });
@@ -133,7 +112,7 @@ export default function App() {
         "bg-[#0A0E1A]/90 backdrop-blur-md border-b border-white/5"
       )}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigateTo('Home')}>
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentPage('Home')}>
             <Trophy className="text-[#00FF87] w-10 h-10 drop-shadow-[0_0_10px_rgba(0,255,135,0.5)]" />
             <span className="text-4xl font-black font-display tracking-tighter text-white drop-shadow-sm">{APP_NAME}</span>
           </div>
@@ -147,13 +126,13 @@ export default function App() {
                   "text-sm font-bold uppercase tracking-wider transition-colors hover:text-[#00FF87]",
                   currentPage === link ? "text-[#00FF87]" : "text-gray-400"
                 )}
-                onClick={() => navigateTo(link)}
+                onClick={() => setCurrentPage(link)}
               >
                 {link}
               </button>
             ))}
             <button 
-              onClick={() => navigateTo('Predictions')}
+              onClick={() => setCurrentPage('Predictions')}
               className="bg-[#00FF87] text-black px-6 py-2.5 rounded-full font-bold text-sm transition-transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(0,255,135,0.3)]"
             >
               Get Free Picks →
@@ -184,7 +163,7 @@ export default function App() {
                       currentPage === link ? "text-[#00FF87]" : "text-white"
                     )}
                     onClick={() => {
-                      navigateTo(link);
+                      setCurrentPage(link);
                       setIsMenuOpen(false);
                     }}
                   >
@@ -193,7 +172,7 @@ export default function App() {
                 ))}
                 <button 
                   onClick={() => {
-                    navigateTo('Predictions');
+                    setCurrentPage('Predictions');
                     setIsMenuOpen(false);
                   }}
                   className="bg-[#00FF87] text-black w-full py-3 rounded-lg font-bold"
@@ -207,17 +186,7 @@ export default function App() {
       </nav>
 
       <main className="min-h-[calc(100vh-80px)]">
-        {currentPage !== 'Home' && (
-          <div className="max-w-7xl mx-auto px-6 pt-24 -mb-20 relative z-20">
-            <button 
-              onClick={goBack}
-              className="flex items-center gap-2 text-gray-500 hover:text-[#00FF87] transition-colors font-bold uppercase text-xs tracking-widest bg-white/5 px-4 py-2 rounded-lg"
-            >
-              ← Previous Page
-            </button>
-          </div>
-        )}
-        {currentPage === 'Home' && <HomePage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={navigateTo} />}
+        {currentPage === 'Home' && <HomePage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={setCurrentPage} />}
         {currentPage === 'Predictions' && <PredictionsPage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} />}
         {currentPage === 'Stats' && <StatsPage />}
         {currentPage === 'Pricing' && <PricingPage billingCycle={billingCycle} setBillingCycle={setBillingCycle} />}
@@ -395,7 +364,7 @@ export default function App() {
       <footer className="py-20 px-6 border-t border-white/5 bg-[#070B14]">
         <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-20">
           <div className="col-span-2">
-          <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => navigateTo('Home')}>
+          <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => setCurrentPage('Home')}>
             <Trophy className="text-[#00FF87] w-8 h-8" />
             <span className="text-2xl font-display tracking-wider hover:text-[#00FF87] transition-colors">{APP_NAME}</span>
           </div>
@@ -412,10 +381,10 @@ export default function App() {
           <div>
             <h4 className="font-bold mb-6 text-[#00FF87]">Quick Links</h4>
             <ul className="space-y-4 text-sm text-gray-500">
-              <li><button onClick={() => navigateTo('Home')} className="hover:text-white transition-colors">Home</button></li>
-              <li><button onClick={() => navigateTo('Predictions')} className="hover:text-white transition-colors">Predictions</button></li>
-              <li><button onClick={() => navigateTo('Stats')} className="hover:text-white transition-colors">Stats</button></li>
-              <li><button onClick={() => navigateTo('Pricing')} className="hover:text-white transition-colors">Pricing</button></li>
+              <li><button onClick={() => setCurrentPage('Home')} className="hover:text-white transition-colors">Home</button></li>
+              <li><button onClick={() => setCurrentPage('Predictions')} className="hover:text-white transition-colors">Predictions</button></li>
+              <li><button onClick={() => setCurrentPage('Stats')} className="hover:text-white transition-colors">Stats</button></li>
+              <li><button onClick={() => setCurrentPage('Pricing')} className="hover:text-white transition-colors">Pricing</button></li>
             </ul>
           </div>
           <div>
@@ -428,7 +397,7 @@ export default function App() {
         </div>
         
         <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between gap-8 items-center text-xs text-gray-500">
-           <p>© 2026 {APP_NAME}. All rights, maintenance and operations to this website are owned by Komurubuga wogan.</p>
+           <p>© 2026 {APP_NAME}. All rights reserved.</p>
            <p className="text-center italic">18+. Gamble Responsibly. BeGambleAware.org</p>
         </div>
       </footer>
@@ -899,12 +868,7 @@ function StatsPage() {
                   { m: "Napoli vs AC Milan", r: "WON", o: "1.72" },
                   { m: "Leverkusen vs Roma", r: "WON", o: "1.80" },
                   { m: "Bayern vs Stuttgart", r: "LOST", o: "1.65" },
-                  { m: "PSG vs Dortmund", r: "WON", o: "1.55" },
-                  { m: "Man City vs Arsenal", r: "WON", o: "1.95" },
-                  { m: "Inter Milan vs Lazio", r: "WON", o: "1.68" },
-                  { m: "Barcelona vs Sociedad", r: "WON", o: "1.52" },
-                  { m: "Chelsea vs Tottenham", r: "LOST", o: "2.10" },
-                  { m: "Atalanta vs Juventus", r: "WON", o: "2.25" }
+                  { m: "PSG vs Dortmund", r: "WON", o: "1.55" }
                ].map((row, i) => (
                   <div key={i} className="flex justify-between items-center p-6 bg-black/20 rounded-2xl">
                      <span className="font-bold">{row.m}</span>
