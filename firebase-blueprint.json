@@ -1,0 +1,43 @@
+{
+  "entities": {
+    "Comment": {
+      "title": "Comment",
+      "description": "A user comment on the website.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user who posted the comment (optional)."
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of the commenter."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email of the commenter."
+        },
+        "text": {
+          "type": "string",
+          "description": "The content of the comment."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the comment was created."
+        },
+        "matchId": {
+          "type": "string",
+          "description": "The ID of the match if this is a match-specific comment."
+        }
+      },
+      "required": ["name", "email", "text", "createdAt"]
+    }
+  },
+  "firestore": {
+    "comments": {
+      "schema": "#/entities/Comment",
+      "description": "Collection of all user comments."
+    }
+  }
+}

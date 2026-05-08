@@ -20,7 +20,8 @@ import {
   Lock
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { getDailyPredictions, type MatchPrediction } from './services/geminiService';
+import { CommentSection } from './components/CommentSection';
+import { db, auth } from './lib/firebase';
 import { cn } from './lib/utils';
 
 // --- Constants ---
@@ -411,6 +412,8 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      <CommentSection />
 
       {/* 10. EMAIL CAPTURE */}
       <section className="py-24 px-6">
