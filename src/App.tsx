@@ -671,20 +671,20 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
             <div className="bg-[#151B2B] border border-white/10 p-8 rounded-[32px] shadow-2xl relative z-10">
               <div className="flex justify-between items-start mb-8 text-white">
                 <div>
-                  <span className="bg-[#00FF87]/20 text-[#00FF87] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider mb-2 inline-block">Match of the Day</span>
-                  <h3 className="text-2xl font-bold">Bundesliga</h3>
+                  <span className="bg-[#00FF87]/20 text-[#00FF87] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider mb-2 inline-block">Wogan's Pick of the Day</span>
+                  <h3 className="text-2xl font-bold">Premier League</h3>
                 </div>
                 <TrendingUp className="text-[#00FF87] w-6 h-6" />
               </div>
               <div className="flex items-center justify-between gap-4 mb-8">
                 <div className="text-center flex-1">
-                  <div className="w-16 h-16 bg-[#FDE100] text-black rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-black">BVB</div>
-                  <div className="font-bold">Dortmund</div>
+                  <div className="w-16 h-16 bg-[#C8102E] text-white rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-white/20">LFC</div>
+                  <div className="font-bold text-white">Liverpool</div>
                 </div>
                 <div className="text-2xl font-display text-gray-600">VS</div>
                 <div className="text-center flex-1">
-                  <div className="w-16 h-16 bg-red-600 rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-white/20">SGE</div>
-                  <div className="font-bold">Frankfurt</div>
+                  <div className="w-16 h-16 bg-[#034694] text-white rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-white/20">CFC</div>
+                  <div className="font-bold text-white">Chelsea</div>
                 </div>
               </div>
               <div className="space-y-4">
@@ -692,9 +692,9 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
                   <span className="text-gray-400">Wogan's Recommendation</span>
                   <span className="font-bold text-[#00FF87]">Home Win (1)</span>
                 </div>
-                <div className="flex justify-between text-sm py-3">
+                <div className="flex justify-between text-sm py-3 px-4 bg-[#00FF87]/5 rounded-xl">
                   <span className="text-gray-400">Wogan's Confidence</span>
-                  <span className="font-bold text-[#00FF87]">94%</span>
+                  <span className="font-bold text-[#00FF87]">92%</span>
                 </div>
               </div>
             </div>
@@ -711,10 +711,11 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
         >
           {[1,2,3,4].map(i => (
             <React.Fragment key={i}>
-              <span>Win Rate: 72%</span>
-              <span>This Month: 48W - 18L</span>
-              <span>Streak: 7W</span>
-              <span>Total ROI: +31%</span>
+              <span>Daily Accuracy: 84.6%</span>
+              <span>This Week: 62W - 14L</span>
+              <span>Premier League Streak: 12W</span>
+              <span>Last 30 Days ROI: +42.8%</span>
+              <span>Active VIP Members: 3,402</span>
             </React.Fragment>
           ))}
         </motion.div>

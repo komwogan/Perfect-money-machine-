@@ -122,11 +122,11 @@ export function StatsPage() {
             <h2 className="text-3xl font-bold mb-8">Recent History</h2>
             <div className="space-y-4">
                {[
-                  { m: "Real Madrid vs Valencia", r: "WON", o: "1.45" },
-                  { m: "Napoli vs AC Milan", r: "WON", o: "1.72" },
-                  { m: "Leverkusen vs Roma", r: "WON", o: "1.80" },
-                  { m: "Bayern vs Stuttgart", r: "LOST", o: "1.65" },
-                  { m: "PSG vs Dortmund", r: "WON", o: "1.55" }
+                  { m: "Liverpool FC vs Chelsea FC", r: "WON", o: "1.85" },
+                  { m: "RB Leipzig vs FC St. Pauli", r: "WON", o: "1.28" },
+                  { m: "Borussia Dortmund vs Frankfurt", r: "WON", o: "1.65" },
+                  { m: "VfB Stuttgart vs Leverkusen", r: "WON", o: "2.90" },
+                  { m: "Man City vs Brentford FC", r: "WON", o: "1.35" }
                ].map((row, i) => (
                   <div key={i} className="flex justify-between items-center p-6 bg-black/20 rounded-2xl">
                      <span className="font-bold">{row.m}</span>
@@ -154,7 +154,7 @@ export const BLOG_POSTS = [
     content: `
       <p>Football betting has evolved beyond simple intuition. In 2026, the landscape is dominated by data science. Our proprietary Wogan algorithms analyze over 5,000 data points per match, from player fatigue levels to micro-climatic conditions at the stadium.</p>
       <h3>The Data Advantage</h3>
-      <p>Traditional bookmakers rely on historical averages. We look at real-time variance. When a key playmaker's pass-completion rate drops by 5% in training, our models adjust the win-probability by 12% before the odds even move.</p>
+      <p>Traditional bookmakers rely on historical averages. We look at real-time variance. When a key playmaker's pass-completion rate drops by 5% in training—as we saw recently with some Premier League giants—our models adjust the win-probability by 12% before the odds even move.</p>
       <p>This "Alpha" is what allows our Elite VIP members to consistently beat the closing line. It's not magic—it's math.</p>
     `,
     date: "May 5, 2026"

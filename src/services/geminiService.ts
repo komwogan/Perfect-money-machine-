@@ -64,127 +64,97 @@ export async function getDailyPredictions(): Promise<MatchPrediction[]> {
     return JSON.parse(text);
   } catch (error) {
     console.error("Error fetching predictions:", error);
-    // Fallback data reflecting the user's provided image
+    // Fallback data reflecting the user's provided images
     return [
-      {
-        match: "Borussia Dortmund vs Eintracht Frankfurt",
-        league: "Bundesliga",
-        tip: "Home Win (1)",
-        odds: "1.65",
-        confidence: 94,
-        isVip: true,
-        time: "21:30 GMT",
-        analysis: "Wogan's Take: Dortmund are lethal at the Signal Iduna Park. Frankfurt struggle on the break against high-press teams. I'm backing the home side to dominate possession and find the net twice."
-      },
       {
         match: "Liverpool FC vs Chelsea FC",
         league: "Premier League",
         tip: "Home Win (1)",
-        odds: "1.86",
-        confidence: 89,
+        odds: "1.85",
+        confidence: 92,
         isVip: true,
         time: "14:30 GMT",
-        analysis: "Wogan's Take: Anfield under the lights is a different beast. Chelsea's transition defense is still leaky, and Salah loves scoring against his former club. Value is on the Reds."
-      },
-      {
-        match: "AC Monza vs Empoli FC",
-        league: "Serie B",
-        tip: "Home Win (1)",
-        odds: "1.69",
-        confidence: 85,
-        isVip: false,
-        time: "21:30 GMT",
-        analysis: "Wogan's Take: Monza are solid at home and Empoli's strike force has been blunt lately. A narrow 1-0 or 2-0 win expected here."
-      },
-      {
-        match: "Venezia FC vs Palermo FC",
-        league: "Serie B",
-        tip: "Home Win (1)",
-        odds: "1.61",
-        confidence: 87,
-        isVip: false,
-        time: "21:30 GMT",
-        analysis: "Wogan's Take: Venezia's home form is the only reason they are climbing the table. Palermo are inconsistent travelers."
-      },
-      {
-        match: "KKS Lech Poznan vs MKS Arka Gdynia",
-        league: "Ekstraklasa",
-        tip: "Home Win (1)",
-        odds: "1.35",
-        confidence: 96,
-        isVip: false,
-        time: "21:30 GMT",
-        analysis: "Wogan's Take: This is a bankroll builder. Lech Poznan are miles ahead in terms of quality and depth. Safe bet."
-      },
-      {
-        match: "Frosinone Calcio vs Mantova 1911",
-        league: "Serie B",
-        tip: "Home Win (1)",
-        odds: "1.63",
-        confidence: 84,
-        isVip: false,
-        time: "21:30 GMT",
-        analysis: "Wogan's Take: Frosinone's tactical setup is purpose-built to break down low blocks like Mantova's."
-      },
-      {
-        match: "Racing Club De Lens vs FC Nantes",
-        league: "Ligue 1",
-        tip: "Home Win (1)",
-        odds: "1.43",
-        confidence: 91,
-        isVip: false,
-        time: "21:45 GMT",
-        analysis: "Wogan's Take: Lens have the best defensive record at home this season. Nantes won't find a way through."
-      },
-      {
-        match: "Torino FC vs Sassuolo Calcio",
-        league: "Serie A",
-        tip: "Draw (X)",
-        odds: "3.21",
-        confidence: 78,
-        isVip: true,
-        time: "21:45 GMT",
-        analysis: "Wogan's Take: Both teams play cagey football against mid-table rivals. The draw offers massive value here."
-      },
-      {
-        match: "Hull City vs Millwall FC",
-        league: "Championship",
-        tip: "Away Win (2)",
-        odds: "2.39",
-        confidence: 82,
-        isVip: true,
-        time: "22:00 GMT",
-        analysis: "Wogan's Take: Millwall's physicality will be too much for Hull's young midfield. Expect a set-piece goal."
-      },
-      {
-        match: "Levante UD vs CA Osasuna",
-        league: "LaLiga",
-        tip: "Home Win (1)",
-        odds: "2.49",
-        confidence: 80,
-        isVip: true,
-        time: "22:00 GMT",
-        analysis: "Wogan's Take: Levante are fighting for survival and their intensity at home has spiked. Osasuna are safe and may rotate."
+        analysis: "Wogan's Take: Anfield is a fortress for these big 2:30 kick-offs. Chelsea's defense is still figuring itself out, while Salah and Diaz are in peak clinical form. The fire is on the home win for a reason."
       },
       {
         match: "Middlesbrough FC vs Southampton FC",
         league: "Championship",
         tip: "Home Win (1)",
-        odds: "2.26",
-        confidence: 83,
+        odds: "2.31",
+        confidence: 81,
         isVip: true,
         time: "14:30 GMT",
-        analysis: "Wogan's Take: Boro have found their rhythm. Southampton are struggling with injuries to key creative players."
+        analysis: "Wogan's Take: Boro have a point to prove at home. Southampton are technically gifted but often struggle with the physicality of high-tempo Championship matches in the mid-afternoon slot."
       },
       {
         match: "Elche CF vs Deportivo Alaves",
         league: "LaLiga",
-        tip: "Under 2.5 Goals",
-        odds: "1.75",
+        tip: "Home Win (1)",
+        odds: "2.26",
         confidence: 88,
         isVip: false,
         time: "15:00 GMT",
-        analysis: "Wogan's Take: A relegation 6-pointer usually ends in a stalemate or a single goal. Discipline over flair today."
+        analysis: "Wogan's Take: Elche have been quietly solid at home. Alaves are inconsistent travelers, and the data suggests a narrow but controlled home victory. Great value on the '1' here."
+      },
+      {
+        match: "Cagliari Calcio vs Udinese Calcio",
+        league: "Serie A",
+        tip: "Draw (X)",
+        odds: "3.11",
+        confidence: 76,
+        isVip: true,
+        time: "16:00 GMT",
+        analysis: "Wogan's Take: Two sides that prioritize defensive structure over attacking risk. I'm seeing a classic Italian stalemate where a 1-1 or 0-0 is the most probable outcome. Tactical battle."
+      },
+      {
+        match: "RB Leipzig vs FC St. Pauli",
+        league: "Bundesliga",
+        tip: "Home Win (1)",
+        odds: "1.28",
+        confidence: 96,
+        isVip: false,
+        time: "16:30 GMT",
+        analysis: "Wogan's Take: A complete mismatch in terms of transition speed. Leipzig will exploit the gaps St. Pauli leaves when they push up. This is a banker for any accumulator today."
+      },
+      {
+        match: "VfB Stuttgart vs Bayer Leverkusen",
+        league: "Bundesliga",
+        tip: "Away Win (2)",
+        odds: "2.90",
+        confidence: 84,
+        isVip: true,
+        time: "16:30 GMT",
+        analysis: "Wogan's Take: Leverkusen's 'Neverkusen' days are over; they are clinical finishers now. Stuttgart are strong, but Alonso's tactical flexibility gives the away side the critical edge at these odds."
+      },
+      {
+        match: "FC Augsburg vs Borussia Monchengladbach",
+        league: "Bundesliga",
+        tip: "Home Win (1)",
+        odds: "2.06",
+        confidence: 83,
+        isVip: false,
+        time: "16:30 GMT",
+        analysis: "Wogan's Take: Augsburg's press is purpose-built to disrupt Gladbach's build-up play. If the hosts maintain their intensity for 70 minutes, they'll walk away with all three points."
+      },
+      {
+        match: "TSG Hoffenheim vs Werder Bremen",
+        league: "Bundesliga",
+        tip: "Home Win (1)",
+        odds: "1.47",
+        confidence: 89,
+        isVip: false,
+        time: "16:30 GMT",
+        analysis: "Wogan's Take: Hoffenheim's attacking efficiency at home is top-tier. Bremen's backline lacks the pace to track Kramaric's runs. Expect a high-scoring home win."
+      },
+      {
+        match: "Sunderland AFC vs Manchester United",
+        league: "Premier League",
+        tip: "Away Win (2)",
+        odds: "1.94",
+        confidence: 80,
+        isVip: false,
+        time: "17:00 GMT",
+        analysis: "Wogan's Take: United have a superior individual talent pool that usually shines through in these late games. Sunderland will be loud, but Man Utd's counter-attacking setup is lethal here."
       }
     ];
   }
