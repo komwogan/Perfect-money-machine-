@@ -35,7 +35,7 @@ export async function getDailyPredictions(): Promise<MatchPrediction[]> {
     const ai = getAI();
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
-      contents: "Find today's top 12 major football matches (Premier League, La Liga, Bundesliga, Serie A, etc.) and provide expert betting predictions for each. Format the output as a JSON array. IMPORTANT: Exactly 6 matches must have 'isVip': false and exactly 6 matches must have 'isVip': true. The analysis should sound like it's from a professional expert named Wogan.",
+      contents: "Find today's football matches. Provide EXACTLY these 4 matches as the ONLY output: 1. FC Augsburg vs Borussia Monchengladbach, 2. TSG Hoffenheim vs Werder Bremen, 3. Sunderland AFC vs Manchester United, 4. Brighton & Hove Albion vs Wolverhampton Wanderers. Assign exactly 2 as free (isVip: false) and 2 as VIP (isVip: true). The analysis should sound like it's from a professional expert named Wogan.",
       config: {
         tools: [{ googleSearch: {} }],
         responseMimeType: "application/json",
@@ -64,38 +64,8 @@ export async function getDailyPredictions(): Promise<MatchPrediction[]> {
     return JSON.parse(text);
   } catch (error) {
     console.error("Error fetching predictions:", error);
-    // Fallback data reflecting the matches from the user's image
+    // Fallback data reflecting ONLY the 4 matches from the user's image
     return [
-      {
-        match: "Manchester City vs Brentford FC",
-        league: "Premier League",
-        tip: "Home Win (1)",
-        odds: "1.35",
-        confidence: 95,
-        isVip: true,
-        time: "19:30 GMT",
-        analysis: "Wogan's Take: City at home is a fortress. Haaland will feast on any defensive errors from Brentford."
-      },
-      {
-        match: "RB Leipzig vs FC St. Pauli",
-        league: "Bundesliga",
-        tip: "Home Win (1)",
-        odds: "1.28",
-        confidence: 96,
-        isVip: false,
-        time: "16:30 GMT",
-        analysis: "Wogan's Take: Leipzig are relentless at home. St. Pauli's defensive structure will struggle against the pace of Openda and Simons."
-      },
-      {
-        match: "VfB Stuttgart vs Bayer Leverkusen",
-        league: "Bundesliga",
-        tip: "Away Win (2)",
-        odds: "2.90",
-        confidence: 81,
-        isVip: true,
-        time: "16:30 GMT",
-        analysis: "Wogan's Take: Leverkusen's unbeaten spirit remains their greatest asset. Stuttgart are elite, but Alonso's tactical mid-game adjustments will be the difference."
-      },
       {
         match: "FC Augsburg vs Borussia Monchengladbach",
         league: "Bundesliga",
@@ -121,8 +91,8 @@ export async function getDailyPredictions(): Promise<MatchPrediction[]> {
         league: "Premier League",
         tip: "Away Win (2)",
         odds: "1.94",
-        confidence: 79,
-        isVip: false,
+        confidence: 88,
+        isVip: true,
         time: "17:00 GMT",
         analysis: "Wogan's Take: United's individual quality usually shines in these 'trap' games. Bruno Fernandes to dictate the tempo."
       },
@@ -132,59 +102,9 @@ export async function getDailyPredictions(): Promise<MatchPrediction[]> {
         tip: "Home Win (1)",
         odds: "1.25",
         confidence: 92,
-        isVip: false,
+        isVip: true,
         time: "17:00 GMT",
         analysis: "Wogan's Take: Brighton's system is light years ahead of Wolves' current disjointed defensive setup. Easy home victory expected."
-      },
-      {
-        match: "Fulham FC vs AFC Bournemouth",
-        league: "Premier League",
-        tip: "Away Win (2)",
-        odds: "2.55",
-        confidence: 74,
-        isVip: false,
-        time: "17:00 GMT",
-        analysis: "Wogan's Take: Bournemouth are being underrated by the market. Their high pressing will cause major problems for Fulham."
-      },
-      {
-        match: "Sevilla FC vs Espanyol Barcelona",
-        league: "LaLiga",
-        tip: "Home Win (1)",
-        odds: "2.06",
-        confidence: 80,
-        isVip: true,
-        time: "17:15 GMT",
-        analysis: "Wogan's Take: Sevilla are masters of the home grind. Espanyol will sit deep, but the pressure will eventually tell."
-      },
-      {
-        match: "Lazio Rome vs Inter Milano",
-        league: "Serie A",
-        tip: "Away Win (2)",
-        odds: "1.82",
-        confidence: 88,
-        isVip: true,
-        time: "19:00 GMT",
-        analysis: "Wogan's Take: Inter are the class of Serie A. Lazio's inconsistency will be punished by Lautaro Martinez."
-      },
-      {
-        match: "Atletico Madrid vs RC Celta de Vigo",
-        league: "LaLiga",
-        tip: "Home Win (1)",
-        odds: "2.10",
-        confidence: 85,
-        isVip: true,
-        time: "19:30 GMT",
-        analysis: "Wogan's Take: Simeone's men are grinding out results in typical fashion. Celta struggle against low-block defenses."
-      },
-      {
-        match: "VFL Wolfsburg vs Bayern Munich",
-        league: "Bundesliga",
-        tip: "Away Win (2)",
-        odds: "1.56",
-        confidence: 91,
-        isVip: true,
-        time: "19:30 GMT",
-        analysis: "Wogan's Take: Bayern are chasing the title and cannot afford any slips. Harry Kane to find the net."
       }
     ];
   }
