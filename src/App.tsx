@@ -783,8 +783,8 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
 }
 
 function PredictionsPage({ predictions, isLoading, timeLeft, onNavigate }: { predictions: MatchPrediction[], isLoading: boolean, timeLeft: any, onNavigate: (page: string) => void }) {
-  const freeMatches = predictions.filter(p => !p.isVip).slice(0, 6);
-  const vipMatches = predictions.filter(p => p.isVip).slice(0, 6);
+  const freeMatches = predictions.filter(p => !p.isVip);
+  const vipMatches = predictions.filter(p => p.isVip);
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="pt-32 pb-24 px-6 max-w-7xl mx-auto">

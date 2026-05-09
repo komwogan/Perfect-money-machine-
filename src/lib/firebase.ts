@@ -3,8 +3,19 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+// Handle potential missing or malformed config gracefully for various environments
+const safeFirebaseConfig = (firebaseConfig && firebaseConfig.apiKey) ? firebaseConfig : {
+  apiKey: "missing",
+  authDomain: "missing",
+  projectId: "missing",
+  storageBucket: "missing",
+  messagingSenderId: "missing",
+  appId: "missing",
+  firestoreDatabaseId: "(default)"
+};
+
+const app = initializeApp(safeFirebaseConfig);
+export const db = getFirestore(app, safeFirebaseConfig.firestoreDatabaseId || '(default)');
 export const auth = getAuth(app);
 
 // Connectivity check as per guidelines
