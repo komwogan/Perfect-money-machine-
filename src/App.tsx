@@ -175,23 +175,12 @@ export default function App() {
 
   return (
     <div className="bg-[#0A0E1A] text-white font-['Inter'] selection:bg-[#00FF87] selection:text-black min-h-screen">
-      {isLoading ? (
-        <div className="fixed inset-0 bg-[#0A0E1A] flex flex-col items-center justify-center z-[100]">
-          <Trophy className="text-[#00FF87] w-16 h-16 mb-4 animate-pulse" />
-          <div className="text-base font-medium tracking-widest animate-pulse">WOGAN PREDICTS</div>
-          <div className="mt-8 flex gap-2">
-            <div className="w-2 h-2 bg-[#00FF87] rounded-full animate-bounce" />
-            <div className="w-2 h-2 bg-[#00FF87] rounded-full animate-bounce [animation-delay:0.2s]" />
-            <div className="w-2 h-2 bg-[#00FF87] rounded-full animate-bounce [animation-delay:0.4s]" />
-          </div>
-        </div>
-      ) : (
-        <>
-          {/* 1. NAVIGATION BAR */}
-      <nav className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4",
-        "bg-[#0A0E1A]/90 backdrop-blur-md border-b border-white/5"
-      )}>
+      <>
+        {/* 1. NAVIGATION BAR */}
+        <nav className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4",
+          "bg-[#0A0E1A]/90 backdrop-blur-md border-b border-white/5"
+        )}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             {currentPage !== 'Home' && (
@@ -305,7 +294,6 @@ export default function App() {
         </React.Suspense>
       </main>
     </>
-    )}
       {/* 7. TESTIMONIALS */}
       <section className="py-24 px-6 bg-white/[0.02]">
         <div className="max-w-7xl mx-auto">
