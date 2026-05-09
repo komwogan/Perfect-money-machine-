@@ -369,7 +369,7 @@ export default function App() {
               <p className="text-gray-400 text-sm mb-8">Basic insights for casual bettors.</p>
               <div className="text-4xl font-black mb-8 text-white">€0<span className="text-sm font-normal text-gray-500"> /mo</span></div>
               <ul className="space-y-4 mb-10 flex-1">
-                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> 2-3 Free Tips / Day</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Wogan's Featured Tips</li>
                  <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Basic Match Stats</li>
                  <li className="flex items-center gap-3 text-sm text-gray-400"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Email Newsletter</li>
                  <li className="flex items-center gap-3 text-sm text-gray-600"><X className="w-5 h-5" aria-hidden="true" /> VIP Predictions</li>
@@ -394,7 +394,7 @@ export default function App() {
                 {billingCycle === 'monthly' ? '€19' : '€15'}<span className="text-sm font-normal text-gray-500"> /mo</span>
               </div>
               <ul className="space-y-4 mb-10 flex-1">
-                 <li className="flex items-center gap-3 text-sm text-gray-200"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> All Daily Tips (10+)</li>
+                 <li className="flex items-center gap-3 text-sm text-gray-200"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> All Curated Daily Tips</li>
                  <li className="flex items-center gap-3 text-sm text-gray-200"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Confidence Ratings</li>
                  <li className="flex items-center gap-3 text-sm text-gray-200"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Stats Dashboard Access</li>
                  <li className="flex items-center gap-3 text-sm text-gray-200"><CheckCircle2 className="w-5 h-5 text-[#00FF87]" aria-hidden="true" /> Telegram Community</li>
@@ -445,7 +445,7 @@ export default function App() {
                { q: "How do I receive my tips?", a: "Tips are posted directly to your member dashboard. Pro and Elite members also receive instant alerts via Telegram and WhatsApp." },
                { q: "Can I cancel my subscription anytime?", a: "Yes, we handle all billing via PayPal. You can cancel by contacting us or via your PayPal dashboard." },
                { q: "Do you guarantee winnings?", a: "No. While our record is stellar, sports are unpredictable. We provide mathematical edges, but responsible bankroll management is key." },
-               { q: "How many tips per day?", a: "Free users receive 6 fixtures. Pro members typically get 12+ analyzed matches, and Elite members get exclusive high-confidence 'locks'." }
+               { q: "How many tips per day?", a: "We prioritize quality over quantity. Wogan selects only the highest-confidence opportunities each day, from a featured 'Match of the Day' to exclusive VIP-locked entries." }
              ].map((faq, i) => (
                 <FaqItem key={i} question={faq.q} answer={faq.a} />
              ))}
@@ -678,13 +678,13 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
               </div>
               <div className="flex items-center justify-between gap-4 mb-8">
                 <div className="text-center flex-1">
-                  <div className="w-16 h-16 bg-[#C8102E] text-white rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-white/20">LFC</div>
-                  <div className="font-bold text-white">Liverpool</div>
+                  <div className="w-16 h-16 bg-[#6CABDD] text-white rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-white/20">MCY</div>
+                  <div className="font-bold text-white">Man City</div>
                 </div>
                 <div className="text-2xl font-display text-gray-600">VS</div>
                 <div className="text-center flex-1">
-                  <div className="w-16 h-16 bg-[#034694] text-white rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-white/20">CFC</div>
-                  <div className="font-bold text-white">Chelsea</div>
+                  <div className="w-16 h-16 bg-[#E30613] text-white rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-white/20">BRE</div>
+                  <div className="font-bold text-white">Brentford</div>
                 </div>
               </div>
               <div className="space-y-4">
@@ -694,7 +694,7 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
                 </div>
                 <div className="flex justify-between text-sm py-3 px-4 bg-[#00FF87]/5 rounded-xl">
                   <span className="text-gray-400">Wogan's Confidence</span>
-                  <span className="font-bold text-[#00FF87]">90%</span>
+                  <span className="font-bold text-[#00FF87]">95%</span>
                 </div>
               </div>
             </div>
@@ -725,9 +725,9 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
       <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-display mb-12 text-center">Featured <span className="text-[#00FF87]">Predictions</span></h2>
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="flex flex-wrap justify-center gap-6">
                  {predictions.slice(0, 3).map((p, i) => (
-                    <div key={i} className="bg-[#151B2B] p-6 rounded-3xl border border-white/5">
+                    <div key={i} className="bg-[#151B2B] p-6 rounded-3xl border border-white/5 w-full md:w-[calc(33.333%-16px)] min-w-[300px]">
                        <div className="flex justify-between mb-4">
                           <span className="text-xs uppercase font-bold text-gray-500">{p.league}</span>
                           <span className={cn(
@@ -791,7 +791,7 @@ function PredictionsPage({ predictions, isLoading, timeLeft, onNavigate }: { pre
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
         <div>
            <h1 className="text-6xl font-display mb-4">Daily <span className="text-[#00FF87]">Predictions</span></h1>
-           <p className="text-gray-400">12 High-confidence matches analyzed by Wogan daily.</p>
+           <p className="text-gray-400">{predictions.length} High-confidence {predictions.length === 1 ? 'match' : 'matches'} analyzed by Wogan daily.</p>
         </div>
         <div className="bg-[#151B2B] p-4 rounded-2xl flex items-center gap-4 border border-white/5">
            <Clock className="w-10 h-10 text-[#00FF87]" />
@@ -803,31 +803,35 @@ function PredictionsPage({ predictions, isLoading, timeLeft, onNavigate }: { pre
       </div>
 
       <div className="space-y-16">
-        <div>
-          <h2 className="text-3xl font-display mb-8 flex items-center gap-4">
-             <span className="text-white">Free Daily Picks</span>
-             <div className="h-1 flex-1 bg-white/5 rounded-full" />
-             <span className="text-sm font-bold text-gray-400">6 MATCHES</span>
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-             {freeMatches.map((p, idx) => (
-                <PredictionCard key={idx} prediction={p} />
-             ))}
+        {freeMatches.length > 0 && (
+          <div>
+            <h2 className="text-3xl font-display mb-8 flex items-center gap-4">
+               <span className="text-white">Free Daily Picks</span>
+               <div className="h-1 flex-1 bg-white/5 rounded-full" />
+               <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">{freeMatches.length} {freeMatches.length === 1 ? 'Match' : 'Matches'}</span>
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+               {freeMatches.map((p, idx) => (
+                  <PredictionCard key={idx} prediction={p} />
+               ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div>
-           <h2 className="text-3xl font-display mb-8 flex items-center gap-4">
-             <span className="text-[#00FF87]">Elite VIP Picks</span>
-             <div className="h-1 flex-1 bg-[#00FF87]/10 rounded-full" />
-             <span className="text-sm font-bold text-[#00FF87]">6 MATCHES</span>
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-             {vipMatches.map((p, idx) => (
-                <PredictionCard key={idx} prediction={p} isVipLocked />
-             ))}
+        {vipMatches.length > 0 && (
+          <div>
+             <h2 className="text-3xl font-display mb-8 flex items-center gap-4">
+               <span className="text-[#00FF87]">Elite VIP Picks</span>
+               <div className="h-1 flex-1 bg-[#00FF87]/10 rounded-full" />
+               <span className="text-sm font-bold text-[#00FF87] uppercase tracking-widest">{vipMatches.length} {vipMatches.length === 1 ? 'Match' : 'Matches'}</span>
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+               {vipMatches.map((p, idx) => (
+                  <PredictionCard key={idx} prediction={p} isVipLocked />
+               ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </motion.div>
   );

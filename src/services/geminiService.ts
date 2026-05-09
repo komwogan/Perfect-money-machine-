@@ -49,7 +49,7 @@ export async function getDailyPredictions(): Promise<MatchPrediction[]> {
               tip: { type: Type.STRING, description: "e.g., 1X2, Over/Under, BTTS" },
               odds: { type: Type.STRING, description: "e.g., 1.85" },
               confidence: { type: Type.NUMBER, description: "0 to 100" },
-              isVip: { type: Type.BOOLEAN, description: "Randomly assign true to 2-3 matches" },
+              isVip: { type: Type.BOOLEAN },
               time: { type: Type.STRING, description: "Kick-off time (GMT)" },
               analysis: { type: Type.STRING, description: "Brief data-backed explanation" }
             },
@@ -64,57 +64,27 @@ export async function getDailyPredictions(): Promise<MatchPrediction[]> {
     return JSON.parse(text);
   } catch (error) {
     console.error("Error fetching predictions:", error);
-    // Fallback data reflecting the user's provided images
+    // Fallback data reflecting the matches from the user's image
     return [
       {
-        match: "Liverpool FC vs Chelsea FC",
+        match: "Manchester City vs Brentford FC",
         league: "Premier League",
         tip: "Home Win (1)",
-        odds: "1.85",
-        confidence: 94,
+        odds: "1.35",
+        confidence: 95,
         isVip: true,
-        time: "14:30 GMT",
-        analysis: "Wogan's Take: Anfield is rocking for this early kick-off. Liverpool's high line might be risky, but their attacking firepower coached by Slot is currently outclassing Chelsea's transition defense. Banker."
-      },
-      {
-        match: "Middlesbrough FC vs Southampton FC",
-        league: "Championship",
-        tip: "Draw (X)",
-        odds: "3.31",
-        confidence: 72,
-        isVip: true,
-        time: "14:30 GMT",
-        analysis: "Wogan's Take: Two technically gifted sides that often cancel each other out. Middlesbrough are strong at home, but Southampton's possession-based game makes them hard to beat. I smell a cagey stalemate."
-      },
-      {
-        match: "Elche CF vs Deportivo Alaves",
-        league: "LaLiga",
-        tip: "Home Win (1)",
-        odds: "2.26",
-        confidence: 86,
-        isVip: true,
-        time: "15:00 GMT",
-        analysis: "Wogan's Take: Elche's defensive solidity is underrated. Alaves struggle for goals on the road. The '1' at over evens is value that my algorithm can't ignore today. 1-0 or 2-0."
-      },
-      {
-        match: "Cagliari Calcio vs Udinese Calcio",
-        league: "Serie A",
-        tip: "Away Win (2)",
-        odds: "2.94",
-        confidence: 68,
-        isVip: true,
-        time: "16:00 GMT",
-        analysis: "Wogan's Take: Udinese have more quality in the final third. Cagliari will be compact, but one moment of magic from Lucca or Samardzic could decide this low-scoring affair."
+        time: "19:30 GMT",
+        analysis: "Wogan's Take: City at home is a fortress. Haaland will feast on any defensive errors from Brentford."
       },
       {
         match: "RB Leipzig vs FC St. Pauli",
         league: "Bundesliga",
         tip: "Home Win (1)",
         odds: "1.28",
-        confidence: 97,
+        confidence: 96,
         isVip: false,
         time: "16:30 GMT",
-        analysis: "Wogan's Take: Complete mismatch in transition speed. Leipzig will exploit the gaps St. Pauli leaves when they push up. This is a banker for any accumulator today."
+        analysis: "Wogan's Take: Leipzig are relentless at home. St. Pauli's defensive structure will struggle against the pace of Openda and Simons."
       },
       {
         match: "VfB Stuttgart vs Bayer Leverkusen",
@@ -124,7 +94,7 @@ export async function getDailyPredictions(): Promise<MatchPrediction[]> {
         confidence: 81,
         isVip: true,
         time: "16:30 GMT",
-        analysis: "Wogan's Take: Champions' mentality. Leverkusen find ways to win even when played off the park. Stuttgart are elite, but Xabi Alonso has the tactical edge in mid-game adjustments."
+        analysis: "Wogan's Take: Leverkusen's unbeaten spirit remains their greatest asset. Stuttgart are elite, but Alonso's tactical mid-game adjustments will be the difference."
       },
       {
         match: "FC Augsburg vs Borussia Monchengladbach",
@@ -134,7 +104,7 @@ export async function getDailyPredictions(): Promise<MatchPrediction[]> {
         confidence: 84,
         isVip: false,
         time: "16:30 GMT",
-        analysis: "Wogan's Take: Augsburg's home atmosphere is toxic for visitors. Gladbach's away record is abysmal lately. The home win at 2.06 is the smart money choice."
+        analysis: "Wogan's Take: Augsburg's home atmosphere is toxic for visitors. Gladbach's away record is abysmal lately."
       },
       {
         match: "TSG Hoffenheim vs Werder Bremen",
@@ -144,7 +114,7 @@ export async function getDailyPredictions(): Promise<MatchPrediction[]> {
         confidence: 90,
         isVip: false,
         time: "16:30 GMT",
-        analysis: "Wogan's Take: Hoffenheim are clinical at the PreZero Arena. Werder Bremen have a leaky defense that struggles against aerial threats. Expect multiple home goals here."
+        analysis: "Wogan's Take: Hoffenheim are clinical at the PreZero Arena. Werder Bremen have a leaky defense that struggles against aerial threats."
       },
       {
         match: "Sunderland AFC vs Manchester United",
@@ -154,37 +124,67 @@ export async function getDailyPredictions(): Promise<MatchPrediction[]> {
         confidence: 79,
         isVip: false,
         time: "17:00 GMT",
-        analysis: "Wogan's Take: United's individual quality usually shines in these 'trap' games. Sunderland will be brave, but Bruno Fernandes and Hojlund will have too much space on the counter."
+        analysis: "Wogan's Take: United's individual quality usually shines in these 'trap' games. Bruno Fernandes to dictate the tempo."
       },
       {
-        match: "Arsenal vs Tottenham Hotspur",
+        match: "Brighton & Hove Albion vs Wolves",
         league: "Premier League",
         tip: "Home Win (1)",
-        odds: "1.75",
-        confidence: 82,
+        odds: "1.25",
+        confidence: 92,
         isVip: false,
-        time: "16:30 GMT",
-        analysis: "Wogan's Take: North London is Red today. Arsenal's tactical discipline in big derbies is far superior to Spurs' 'gung-ho' approach under Postecoglou."
+        time: "17:00 GMT",
+        analysis: "Wogan's Take: Brighton's system is light years ahead of Wolves' current disjointed defensive setup. Easy home victory expected."
       },
       {
-        match: "Real Madrid vs FC Barcelona",
+        match: "Fulham FC vs AFC Bournemouth",
+        league: "Premier League",
+        tip: "Away Win (2)",
+        odds: "2.55",
+        confidence: 74,
+        isVip: false,
+        time: "17:00 GMT",
+        analysis: "Wogan's Take: Bournemouth are being underrated by the market. Their high pressing will cause major problems for Fulham."
+      },
+      {
+        match: "Sevilla FC vs Espanyol Barcelona",
         league: "LaLiga",
         tip: "Home Win (1)",
-        odds: "2.15",
-        confidence: 88,
+        odds: "2.06",
+        confidence: 80,
         isVip: true,
-        time: "20:00 GMT",
-        analysis: "Wogan's Take: El Clasico under the lights. Madrid's experience in these high-stakes moments is legendary. Bellingham to score and provide the difference."
+        time: "17:15 GMT",
+        analysis: "Wogan's Take: Sevilla are masters of the home grind. Espanyol will sit deep, but the pressure will eventually tell."
       },
       {
-        match: "Juventus vs AS Roma",
+        match: "Lazio Rome vs Inter Milano",
         league: "Serie A",
+        tip: "Away Win (2)",
+        odds: "1.82",
+        confidence: 88,
+        isVip: true,
+        time: "19:00 GMT",
+        analysis: "Wogan's Take: Inter are the class of Serie A. Lazio's inconsistency will be punished by Lautaro Martinez."
+      },
+      {
+        match: "Atletico Madrid vs RC Celta de Vigo",
+        league: "LaLiga",
         tip: "Home Win (1)",
-        odds: "1.80",
+        odds: "2.10",
         confidence: 85,
-        isVip: false,
-        time: "19:45 GMT",
-        analysis: "Wogan's Take: Allegri-style grind. Juventus will sit deep and frustrate Roma before nicking one on a set-piece. Solid 1-0 potential here."
+        isVip: true,
+        time: "19:30 GMT",
+        analysis: "Wogan's Take: Simeone's men are grinding out results in typical fashion. Celta struggle against low-block defenses."
+      },
+      {
+        match: "VFL Wolfsburg vs Bayern Munich",
+        league: "Bundesliga",
+        tip: "Away Win (2)",
+        odds: "1.56",
+        confidence: 91,
+        isVip: true,
+        time: "19:30 GMT",
+        analysis: "Wogan's Take: Bayern are chasing the title and cannot afford any slips. Harry Kane to find the net."
       }
     ];
   }
