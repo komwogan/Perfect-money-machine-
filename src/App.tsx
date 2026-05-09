@@ -101,9 +101,9 @@ export default function App() {
     async function loadData() {
       try {
         const today = new Date().toDateString();
-        const cached = localStorage.getItem('daily_predictions_v3');
-        const cachedDate = localStorage.getItem('prediction_date_v3');
-        
+        const cached = localStorage.getItem('daily_predictions');
+        const cachedDate = localStorage.getItem('prediction_date');
+
         if (cached && cachedDate === today) {
           try {
             setPredictions(JSON.parse(cached));
@@ -111,15 +111,15 @@ export default function App() {
             return;
           } catch (e) {
             console.error("Failed to parse cached predictions", e);
-            localStorage.removeItem('daily_predictions_v3');
+            localStorage.removeItem('daily_predictions');
           }
         } 
         
         const data = await getDailyPredictions();
         if (data && data.length > 0) {
           setPredictions(data);
-          localStorage.setItem('daily_predictions_v3', JSON.stringify(data));
-          localStorage.setItem('prediction_date_v3', today);
+          localStorage.setItem('daily_predictions', JSON.stringify(data));
+          localStorage.setItem('prediction_date', today);
         }
       } catch (err) {
         console.error("Critical error loading data:", err);
@@ -525,7 +525,6 @@ export default function App() {
         
         <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between gap-8 items-center text-xs text-gray-500">
            <p>© 2026 {APP_NAME}. All rights reserved.</p>
-           <p className="text-[#00FF87] font-bold animate-pulse">Master Wogan – The Legend of Predictions.</p>
            <p className="text-center italic">18+. Gamble Responsibly. BeGambleAware.org</p>
         </div>
       </footer>
@@ -669,44 +668,36 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
           </div>
 
           <div className="relative">
-            {predictions.length > 0 ? (
-              <div className="bg-[#151B2B] border border-white/10 p-8 rounded-[32px] shadow-2xl relative z-10">
-                <div className="flex justify-between items-start mb-8 text-white">
-                  <div>
-                    <span className="bg-[#00FF87]/20 text-[#00FF87] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider mb-2 inline-block">Wogan's Pick of the Day</span>
-                    <h3 className="text-2xl font-bold">{predictions[0].league}</h3>
-                  </div>
-                  <TrendingUp className="text-[#00FF87] w-6 h-6" />
+            <div className="bg-[#151B2B] border border-white/10 p-8 rounded-[32px] shadow-2xl relative z-10">
+              <div className="flex justify-between items-start mb-8 text-white">
+                <div>
+                  <span className="bg-[#00FF87]/20 text-[#00FF87] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider mb-2 inline-block">Wogan's Pick of the Day</span>
+                  <h3 className="text-2xl font-bold">Premier League</h3>
                 </div>
-                <div className="flex items-center justify-between gap-4 mb-8">
-                  <div className="text-center flex-1">
-                    <div className="w-16 h-16 bg-[#00FF87]/10 text-[#00FF87] rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-[#00FF87]/20">
-                      {predictions[0].match.split(' vs ')[0].substring(0, 3).toUpperCase()}
-                    </div>
-                    <div className="font-bold text-white line-clamp-1">{predictions[0].match.split(' vs ')[0]}</div>
-                  </div>
-                  <div className="text-2xl font-display text-gray-600">VS</div>
-                  <div className="text-center flex-1">
-                    <div className="w-16 h-16 bg-white/5 text-gray-300 rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-white/10">
-                      {predictions[0].match.split(' vs ')[1]?.substring(0, 3).toUpperCase() || '???'}
-                    </div>
-                    <div className="font-bold text-white line-clamp-1">{predictions[0].match.split(' vs ')[1] || 'TBD'}</div>
-                  </div>
+                <TrendingUp className="text-[#00FF87] w-6 h-6" />
+              </div>
+              <div className="flex items-center justify-between gap-4 mb-8">
+                <div className="text-center flex-1">
+                  <div className="w-16 h-16 bg-[#6CABDD] text-white rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-white/20">MCY</div>
+                  <div className="font-bold text-white">Man City</div>
                 </div>
-                <div className="space-y-4">
-                  <div className="flex justify-between text-sm py-3 border-b border-white/5">
-                    <span className="text-gray-400">Wogan's Recommendation</span>
-                    <span className="font-bold text-[#00FF87]">{predictions[0].tip}</span>
-                  </div>
-                  <div className="flex justify-between text-sm py-3 px-4 bg-[#00FF87]/5 rounded-xl">
-                    <span className="text-gray-400">Wogan's Confidence</span>
-                    <span className="font-bold text-[#00FF87]">{predictions[0].confidence}%</span>
-                  </div>
+                <div className="text-2xl font-display text-gray-600">VS</div>
+                <div className="text-center flex-1">
+                  <div className="w-16 h-16 bg-[#E30613] text-white rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-white/20">BRE</div>
+                  <div className="font-bold text-white">Brentford</div>
                 </div>
               </div>
-            ) : (
-              <div className="bg-[#151B2B] border border-white/10 p-8 rounded-[32px] animate-pulse h-[400px]" />
-            )}
+              <div className="space-y-4">
+                <div className="flex justify-between text-sm py-3 border-b border-white/5">
+                  <span className="text-gray-400">Wogan's Recommendation</span>
+                  <span className="font-bold text-[#00FF87]">Home Win (1)</span>
+                </div>
+                <div className="flex justify-between text-sm py-3 px-4 bg-[#00FF87]/5 rounded-xl">
+                  <span className="text-gray-400">Wogan's Confidence</span>
+                  <span className="font-bold text-[#00FF87]">95%</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -792,15 +783,15 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
 }
 
 function PredictionsPage({ predictions, isLoading, timeLeft, onNavigate }: { predictions: MatchPrediction[], isLoading: boolean, timeLeft: any, onNavigate: (page: string) => void }) {
-  const freeMatches = predictions.filter(p => !p.isVip).slice(0, 4);
-  const vipMatches = predictions.filter(p => p.isVip);
+  const freeMatches = predictions.filter(p => !p.isVip).slice(0, 6);
+  const vipMatches = predictions.filter(p => p.isVip).slice(0, 6);
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="pt-32 pb-24 px-6 max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
         <div>
            <h1 className="text-6xl font-display mb-4">Daily <span className="text-[#00FF87]">Predictions</span></h1>
-           <p className="text-gray-400">{freeMatches.length} Free High-confidence {freeMatches.length === 1 ? 'match' : 'matches'} and Elite VIP picks analyzed by Wogan daily.</p>
+           <p className="text-gray-400">{predictions.length} High-confidence {predictions.length === 1 ? 'match' : 'matches'} analyzed by Wogan daily.</p>
         </div>
         <div className="bg-[#151B2B] p-4 rounded-2xl flex items-center gap-4 border border-white/5">
            <Clock className="w-10 h-10 text-[#00FF87]" />
