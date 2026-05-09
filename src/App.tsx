@@ -175,12 +175,11 @@ export default function App() {
 
   return (
     <div className="bg-[#0A0E1A] text-white font-['Inter'] selection:bg-[#00FF87] selection:text-black min-h-screen">
-      <>
-        {/* 1. NAVIGATION BAR */}
-        <nav className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4",
-          "bg-[#0A0E1A]/90 backdrop-blur-md border-b border-white/5"
-        )}>
+      {/* 1. NAVIGATION BAR */}
+      <nav className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4",
+        "bg-[#0A0E1A]/90 backdrop-blur-md border-b border-white/5"
+      )}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             {currentPage !== 'Home' && (
@@ -279,11 +278,7 @@ export default function App() {
       </nav>
 
       <main className="min-h-[calc(100vh-80px)] flex flex-col" style={{ containIntrinsicSize: '0 800px', contentVisibility: 'auto' }}>
-        <React.Suspense fallback={
-          <div className="flex items-center justify-center min-h-[600px]">
-             <div className="w-12 h-12 border-4 border-[#00FF87] border-t-transparent rounded-full animate-spin" aria-label="Loading page content" />
-          </div>
-        }>
+        <React.Suspense fallback={null}>
           {currentPage === 'Home' && <HomePage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={navigateTo} />}
           {currentPage === 'Predictions' && <PredictionsPage predictions={predictions} isLoading={isLoading} timeLeft={timeLeft} onNavigate={navigateTo} />}
           {currentPage === 'Stats' && <StatsPage />}
@@ -293,7 +288,7 @@ export default function App() {
           {currentPage === 'Contact' && <ContactPage />}
         </React.Suspense>
       </main>
-    </>
+
       {/* 7. TESTIMONIALS */}
       <section className="py-24 px-6 bg-white/[0.02]">
         <div className="max-w-7xl mx-auto">
