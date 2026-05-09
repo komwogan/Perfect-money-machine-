@@ -525,6 +525,7 @@ export default function App() {
         
         <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between gap-8 items-center text-xs text-gray-500">
            <p>© 2026 {APP_NAME}. All rights reserved.</p>
+           <p className="text-[#00FF87] font-bold animate-pulse">Master Wogan – The Legend of Predictions.</p>
            <p className="text-center italic">18+. Gamble Responsibly. BeGambleAware.org</p>
         </div>
       </footer>
