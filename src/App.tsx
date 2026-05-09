@@ -694,7 +694,7 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
                 </div>
                 <div className="flex justify-between text-sm py-3 px-4 bg-[#00FF87]/5 rounded-xl">
                   <span className="text-gray-400">Wogan's Confidence</span>
-                  <span className="font-bold text-[#00FF87]">92%</span>
+                  <span className="font-bold text-[#00FF87]">94%</span>
                 </div>
               </div>
             </div>
@@ -725,21 +725,26 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
       <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-display mb-12 text-center">Featured <span className="text-[#00FF87]">Predictions</span></h2>
-          <div className="grid md:grid-cols-3 gap-6">
-             {predictions.slice(0, 3).map((p, i) => (
-                <div key={i} className="bg-[#151B2B] p-6 rounded-3xl border border-white/5">
-                   <div className="flex justify-between mb-4">
-                      <span className="text-xs uppercase font-bold text-gray-500">{p.league}</span>
-                      <span className="text-[10px] font-black bg-white/10 px-2 py-0.5 rounded uppercase">Free</span>
-                   </div>
-                   <h4 className="font-bold text-lg mb-4">{p.match}</h4>
-                   <div className="bg-black/20 p-4 rounded-xl flex justify-between items-center">
-                      <span className="text-sm font-bold text-[#00FF87]">{p.tip}</span>
-                      <span className="text-sm font-bold">{p.odds}</span>
-                   </div>
-                </div>
-             ))}
-          </div>
+              <div className="grid md:grid-cols-3 gap-6">
+                 {predictions.slice(0, 3).map((p, i) => (
+                    <div key={i} className="bg-[#151B2B] p-6 rounded-3xl border border-white/5">
+                       <div className="flex justify-between mb-4">
+                          <span className="text-xs uppercase font-bold text-gray-500">{p.league}</span>
+                          <span className={cn(
+                            "text-[10px] font-black px-2 py-0.5 rounded uppercase",
+                            p.isVip ? "bg-[#00FF87] text-black" : "bg-white/10 text-white"
+                          )}>
+                            {p.isVip ? 'VIP' : 'Free'}
+                          </span>
+                       </div>
+                       <h4 className="font-bold text-lg mb-4">{p.match}</h4>
+                       <div className="bg-black/20 p-4 rounded-xl flex justify-between items-center">
+                          <span className="text-sm font-bold text-[#00FF87]">{p.tip}</span>
+                          <span className="text-sm font-bold">{p.odds}</span>
+                       </div>
+                    </div>
+                 ))}
+              </div>
           <div className="mt-12 text-center">
              <button onClick={() => onNavigate('Predictions')} className="text-[#00FF87] font-bold underline underline-offset-8">
                 View All {predictions.length} Daily Predictions →
