@@ -101,9 +101,9 @@ export default function App() {
     async function loadData() {
       try {
         const today = new Date().toDateString();
-        const cached = localStorage.getItem('daily_predictions_v2');
-        const cachedDate = localStorage.getItem('prediction_date_v2');
-
+        const cached = localStorage.getItem('daily_predictions_v3');
+        const cachedDate = localStorage.getItem('prediction_date_v3');
+        
         if (cached && cachedDate === today) {
           try {
             setPredictions(JSON.parse(cached));
@@ -111,15 +111,15 @@ export default function App() {
             return;
           } catch (e) {
             console.error("Failed to parse cached predictions", e);
-            localStorage.removeItem('daily_predictions_v2');
+            localStorage.removeItem('daily_predictions_v3');
           }
         } 
         
         const data = await getDailyPredictions();
         if (data && data.length > 0) {
           setPredictions(data);
-          localStorage.setItem('daily_predictions_v2', JSON.stringify(data));
-          localStorage.setItem('prediction_date_v2', today);
+          localStorage.setItem('daily_predictions_v3', JSON.stringify(data));
+          localStorage.setItem('prediction_date_v3', today);
         }
       } catch (err) {
         console.error("Critical error loading data:", err);
