@@ -694,7 +694,7 @@ function HomePage({ predictions, isLoading, timeLeft, onNavigate }: { prediction
                 </div>
                 <div className="flex justify-between text-sm py-3 px-4 bg-[#00FF87]/5 rounded-xl">
                   <span className="text-gray-400">Wogan's Confidence</span>
-                  <span className="font-bold text-[#00FF87]">94%</span>
+                  <span className="font-bold text-[#00FF87]">90%</span>
                 </div>
               </div>
             </div>
